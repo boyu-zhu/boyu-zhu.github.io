@@ -1,0 +1,772 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Project5: Fun With Diffusion Models!</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+    margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-default_background {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.highlight-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.block-color-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-uiBlue { background-color: rgba(35, 131, 226, .07); }
+.select-value-color-pink { background-color: rgba(245, 224, 233, 1); }
+.select-value-color-purple { background-color: rgba(232, 222, 238, 1); }
+.select-value-color-green { background-color: rgba(219, 237, 219, 1); }
+.select-value-color-gray { background-color: rgba(227, 226, 224, 1); }
+.select-value-color-transparentGray { background-color: rgba(227, 226, 224, 0); }
+.select-value-color-translucentGray { background-color: rgba(0, 0, 0, 0.06); }
+.select-value-color-orange { background-color: rgba(250, 222, 201, 1); }
+.select-value-color-brown { background-color: rgba(238, 224, 218, 1); }
+.select-value-color-red { background-color: rgba(255, 226, 221, 1); }
+.select-value-color-yellow { background-color: rgba(253, 236, 200, 1); }
+.select-value-color-blue { background-color: rgba(211, 229, 239, 1); }
+.select-value-color-pageGlass { background-color: undefined; }
+.select-value-color-washGlass { background-color: undefined; }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="143506f1-dc68-8021-838b-c86948525572" class="page sans"><header><img class="page-cover-image" src="https://www.notion.so/images/page-cover/rijksmuseum_jansz_1641.jpg" style="object-position:center 80%"/><h1 class="page-title">Project5: <strong>Fun With Diffusion Models!</strong></h1><p class="page-description"></p></header><div class="page-body"><h1 id="143506f1-dc68-801f-bc9f-ff7b932cd207" class=""><strong>Part A: The Power of Diffusion Models!</strong></h1><h3 id="143506f1-dc68-80d5-8e89-d856529f53b9" class=""><strong>Part 0: Setup</strong></h3><p id="144506f1-dc68-80e8-86b4-ff20b6baf657" class="">In this part, I use <a href="https://huggingface.co/docs/diffusers/api/pipelines/deepfloyd_if">DeepFloyd IF</a> diffusion model.  I play around with the three given prompts and I try 2 different <code>num_inference_steps</code> </p><p id="144506f1-dc68-801f-8caa-e34a651ddf2c" class="">The random seed I use throughout Part A is 180.</p><p id="143506f1-dc68-8057-8cfb-cbb46a1b7076" class="">
+</p><p id="143506f1-dc68-80f1-970d-fef746b1abb1" class=""><code>num_inference_steps</code> = 20</p><div id="143506f1-dc68-8091-8846-dd06bcf8aed8" class="column-list"><div id="143506f1-dc68-80d8-8c8f-dd7ddff637b2" style="width:33.333333333333336%" class="column"><p id="143506f1-dc68-80ab-8ede-f1f79d0f5f3a" class="">an oil painting of a snowy mountain village</p><figure id="143506f1-dc68-8007-8673-cffc58467340" class="image"><a href="image.png"><img style="width:255.99432373046875px" src="image.png"/></a></figure></div><div id="143506f1-dc68-80fc-af24-ef218ee03c6e" style="width:33.333333333333336%" class="column"><p id="143506f1-dc68-80d0-8402-f9114444abc9" class="">a man wearing a hat</p><figure id="143506f1-dc68-80cd-ae70-f1fb086df875" class="image"><a href="image%201.png"><img style="width:255.99432373046875px" src="image%201.png"/></a></figure><p id="144506f1-dc68-8011-a8e4-d6733bfe482e" class="">
+</p></div><div id="143506f1-dc68-80c6-b04a-ee586c5f2fba" style="width:33.33333333333333%" class="column"><p id="143506f1-dc68-8037-be46-dfcbb4e790e5" class="">a rocket ship</p><figure id="143506f1-dc68-80aa-9cc2-f68503d2e6b5" class="image"><a href="image%202.png"><img style="width:205.3219757080078px" src="image%202.png"/></a></figure></div></div><p id="143506f1-dc68-8049-9add-f6166d74be22" class="">
+</p><p id="144506f1-dc68-8034-9bfb-cafe69080a43" class=""><code>num_inference_steps</code> = 50</p><div id="143506f1-dc68-8021-a493-f33733391348" class="column-list"><div id="143506f1-dc68-8066-8936-d2907081ffc1" style="width:33.33333333333333%" class="column"><figure id="143506f1-dc68-805b-837d-c16b2f64fbac" class="image"><a href="image%203.png"><img style="width:255.99432373046875px" src="image%203.png"/></a></figure></div><div id="143506f1-dc68-80a2-af61-c2f15358d36b" style="width:33.33333333333334%" class="column"><figure id="143506f1-dc68-8023-8da7-e5511e436046" class="image"><a href="image%204.png"><img style="width:255.99432373046875px" src="image%204.png"/></a></figure></div><div id="143506f1-dc68-80f4-ad5a-eaac3ac74e7a" style="width:33.33333333333333%" class="column"><figure id="143506f1-dc68-80b8-829c-d585e763d492" class="image"><a href="image%205.png"><img style="width:255.99432373046875px" src="image%205.png"/></a></figure></div></div><p id="144506f1-dc68-80c4-b395-caf478f394bc" class="">From my observation, I personally feel that the first one does not reflect the requirements of oil painting very well, and the result is more like the style of 2D animation. </p><p id="144506f1-dc68-80db-99e9-fb3ceb7ace08" class="">The second picture does generate an image of a man wearing a hat, but the photo is in black and white. I guess this image is more retro and old-fashioned, so most of the images in the dataset are in black and white.</p><p id="144506f1-dc68-80a2-ab72-f918325633ad" class="">The third image does not specify the style, but the generated image is in an animation style, probably because descriptions like rocket ship appear more often in children&#x27;s style images.</p><p id="144506f1-dc68-80b6-a946-e3ff46736a08" class="">
+</p><h3 id="143506f1-dc68-803b-832b-e172fdc722b4" class=""><strong>Part 1: Sampling Loops</strong></h3><p id="143506f1-dc68-80a0-b612-e79d4b5c46ae" class=""><strong>1.1 Implementing the Forward Process</strong></p><p id="144506f1-dc68-80a1-b76c-f38f0e6bf8e5" class="">Based on the equation:</p><figure id="144506f1-dc68-8022-bd01-f21471fc8f52" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><div class="equation-container"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mtable width="100%"><mtr><mtd width="50%"></mtd><mtd><mrow><msub><mi>x</mi><mi>t</mi></msub><mo>=</mo><msqrt><msub><mover accent="true"><mi>α</mi><mo>ˉ</mo></mover><mi>t</mi></msub></msqrt><msub><mi>x</mi><mn>0</mn></msub><mo>+</mo><msqrt><mrow><mn>1</mn><mo>−</mo><msub><mover accent="true"><mi>α</mi><mo>ˉ</mo></mover><mi>t</mi></msub></mrow></msqrt><mi>ϵ</mi><mspace width="1em"/><mtext>where </mtext><mi>ϵ</mi><mo>∼</mo><mi>N</mi><mo stretchy="false">(</mo><mn>0</mn><mo separator="true">,</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></mtd><mtd width="50%"></mtd><mtd><mtext>(A.2)</mtext></mtd></mtr></mtable><annotation encoding="application/x-tex">x_t = \sqrt{\bar\alpha_t} x_0 + \sqrt{1 - \bar\alpha_t} \epsilon
+          \quad \text{where}~ \epsilon \sim N(0, 1) \tag{A.2}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2806em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.04em;vertical-align:-0.1972em;"></span><span class="mord sqrt"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8428em;"><span class="svg-align" style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord" style="padding-left:0.833em;"><span class="mord"><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.5678em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal" style="margin-right:0.0037em;">α</span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.2222em;"><span class="mord">ˉ</span></span></span></span></span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2806em;"><span style="top:-2.55em;margin-left:-0.0037em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span><span style="top:-2.8028em;"><span class="pstrut" style="height:3em;"></span><span class="hide-tail" style="min-width:0.853em;height:1.08em;"><svg xmlns="http://www.w3.org/2000/svg" width='400em' height='1.08em' viewBox='0 0 400000 1080' preserveAspectRatio='xMinYMin slice'><path d='M95,702
+c-2.7,0,-7.17,-2.7,-13.5,-8c-5.8,-5.3,-9.5,-10,-9.5,-14
+c0,-2,0.3,-3.3,1,-4c1.3,-2.7,23.83,-20.7,67.5,-54
+c44.2,-33.3,65.8,-50.3,66.5,-51c1.3,-1.3,3,-2,5,-2c4.7,0,8.7,3.3,12,10
+s173,378,173,378c0.7,0,35.3,-71,104,-213c68.7,-142,137.5,-285,206.5,-429
+c69,-144,104.5,-217.7,106.5,-221
+l0 -0
+c5.3,-9.3,12,-14,20,-14
+H400000v40H845.2724
+s-225.272,467,-225.272,467s-235,486,-235,486c-2.7,4.7,-9,7,-19,7
+c-6,0,-10,-1,-12,-3s-194,-422,-194,-422s-65,47,-65,47z
+M834 80h400000v40h-400000z'/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.1972em;"><span></span></span></span></span></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1.04em;vertical-align:-0.1589em;"></span><span class="mord sqrt"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8811em;"><span class="svg-align" style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord" style="padding-left:0.833em;"><span class="mord">1</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord"><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.5678em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal" style="margin-right:0.0037em;">α</span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.2222em;"><span class="mord">ˉ</span></span></span></span></span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2806em;"><span style="top:-2.55em;margin-left:-0.0037em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span><span style="top:-2.8411em;"><span class="pstrut" style="height:3em;"></span><span class="hide-tail" style="min-width:0.853em;height:1.08em;"><svg xmlns="http://www.w3.org/2000/svg" width='400em' height='1.08em' viewBox='0 0 400000 1080' preserveAspectRatio='xMinYMin slice'><path d='M95,702
+c-2.7,0,-7.17,-2.7,-13.5,-8c-5.8,-5.3,-9.5,-10,-9.5,-14
+c0,-2,0.3,-3.3,1,-4c1.3,-2.7,23.83,-20.7,67.5,-54
+c44.2,-33.3,65.8,-50.3,66.5,-51c1.3,-1.3,3,-2,5,-2c4.7,0,8.7,3.3,12,10
+s173,378,173,378c0.7,0,35.3,-71,104,-213c68.7,-142,137.5,-285,206.5,-429
+c69,-144,104.5,-217.7,106.5,-221
+l0 -0
+c5.3,-9.3,12,-14,20,-14
+H400000v40H845.2724
+s-225.272,467,-225.272,467s-235,486,-235,486c-2.7,4.7,-9,7,-19,7
+c-6,0,-10,-1,-12,-3s-194,-422,-194,-422s-65,47,-65,47z
+M834 80h400000v40h-400000z'/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.1589em;"><span></span></span></span></span></span><span class="mord mathnormal">ϵ</span><span class="mspace" style="margin-right:1em;"></span><span class="mord text"><span class="mord">where</span></span><span class="mspace nobreak"> </span><span class="mord mathnormal">ϵ</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∼</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span><span class="mopen">(</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">1</span><span class="mclose">)</span></span><span class="tag"><span class="strut" style="height:1.1311em;vertical-align:-0.25em;"></span><span class="mord text"><span class="mord">(</span><span class="mord"><span class="mord">A.2</span></span><span class="mord">)</span></span></span></span></span></span></div></figure><p id="144506f1-dc68-80ec-baaf-ee765f54d5c5" class="">the noise follows the Gaussian distribution.</p><div id="143506f1-dc68-80b5-bae1-dcc337dbefa4" class="column-list"><div id="143506f1-dc68-8091-99ab-d9dfa2ac0432" style="width:25%" class="column"><figure id="143506f1-dc68-8049-bfda-ebac561653a9" class="image"><a href="image%206.png"><img style="width:63.9962158203125px" src="image%206.png"/></a></figure><p id="144506f1-dc68-80a9-bea9-fac457019566" class="">original</p></div><div id="143506f1-dc68-80b3-a33b-edc8840e37a7" style="width:25%" class="column"><figure id="143506f1-dc68-802e-8041-d67ddfd26131" class="image"><a href="image%207.png"><img style="width:63.9962158203125px" src="image%207.png"/></a></figure><p id="144506f1-dc68-8015-b1e0-eca503593457" class="">Noise Level = 250</p></div><div id="143506f1-dc68-809b-9cb9-dd0f56439431" style="width:25%" class="column"><figure id="143506f1-dc68-80df-931f-e9d18e950005" class="image"><a href="image%208.png"><img style="width:63.9962158203125px" src="image%208.png"/></a></figure><p id="144506f1-dc68-8073-b91e-febc0617bb4d" class="">Noise Level = 500</p></div><div id="143506f1-dc68-8039-9867-ff7d336430f2" style="width:25%" class="column"><figure id="143506f1-dc68-8022-91af-e479217c7f4d" class="image"><a href="image%209.png"><img style="width:63.9962158203125px" src="image%209.png"/></a></figure><p id="144506f1-dc68-8010-849e-db5b5ce38be5" class="">Noise Level = 750</p></div></div><p id="143506f1-dc68-80f5-93fa-e1ebb14af5d0" class=""><strong>1.2 Classical Denoising</strong></p><p id="143506f1-dc68-807b-b5f4-ecfe3ccc7365" class=""><br/>I first use <br/><strong>Gaussian blur filtering</strong> to try to remove the noise. </p><p id="144506f1-dc68-80d0-a5ff-f6a928ae3887" class="">The results are not satifying enough.</p><div id="143506f1-dc68-809b-8e0d-f2697ad2d46c" class="column-list"><div id="143506f1-dc68-8032-9491-e48f692b3ae1" style="width:33.33333333333333%" class="column"><figure id="143506f1-dc68-80f9-a8bb-e306869cef02" class="image"><a href="image%2010.png"><img style="width:63.9962158203125px" src="image%2010.png"/></a></figure><p id="144506f1-dc68-80ad-83b9-d526310366f8" class="">Noise Level = 250</p><p id="144506f1-dc68-803e-b501-ff9ed8b51d40" class="">
+</p></div><div id="143506f1-dc68-8056-beb2-df6254982434" style="width:33.33333333333333%" class="column"><figure id="143506f1-dc68-809d-a461-c75117c20160" class="image"><a href="image%2011.png"><img style="width:63.9962158203125px" src="image%2011.png"/></a></figure><p id="144506f1-dc68-807f-8b27-d442b5f2f087" class="">Noise Level = 500</p></div><div id="143506f1-dc68-80ad-91ee-f88272f98b90" style="width:33.33333333333333%" class="column"><figure id="143506f1-dc68-80c7-bcdd-f1ee2a4b7457" class="image"><a href="image%2012.png"><img style="width:63.9962158203125px" src="image%2012.png"/></a></figure><p id="144506f1-dc68-8078-af21-e05edbba7a5e" class="">Noise Level = 750</p></div></div><p id="143506f1-dc68-8001-a960-dd02b0569459" class=""><strong>1.3 One-Step Denoising</strong></p><p id="144506f1-dc68-8059-90b2-f1a8e47d7efa" class="">Therefore, I use UNet to directly estimate the noise and remove the noise from the noisy image to obtain an estimate of the original image.</p><div id="144506f1-dc68-8028-9228-cbf4e56a6d26" class="column-list"><div id="144506f1-dc68-80e8-bcd5-df5501418da1" style="width:25%" class="column"><figure id="144506f1-dc68-8002-88e8-fef76d294241" class="image"><a href="image%206.png"><img style="width:63.9962158203125px" src="image%206.png"/></a></figure><p id="144506f1-dc68-8035-a903-ed66d2836d0f" class="">original</p></div><div id="144506f1-dc68-80cb-8116-e14ddb20df40" style="width:25%" class="column"><figure id="143506f1-dc68-807d-9a99-ce21957babdb" class="image"><a href="image%2013.png"><img style="width:63.9962158203125px" src="image%2013.png"/></a></figure><p id="144506f1-dc68-8079-9f34-d93d5b34d8e2" class="">Noise Level = 250</p><p id="144506f1-dc68-8026-8e30-e5151e4af260" class="">
+</p></div><div id="144506f1-dc68-80bf-a162-c700254ce105" style="width:25%" class="column"><figure id="143506f1-dc68-808b-993d-c2b557862366" class="image"><a href="image%2014.png"><img style="width:63.9962158203125px" src="image%2014.png"/></a></figure><p id="144506f1-dc68-8009-af76-d9c2d61ef222" class="">Noise Level = 500</p></div><div id="144506f1-dc68-807e-9c9f-f4603fbf38fb" style="width:25%" class="column"><figure id="143506f1-dc68-808d-9388-fcca53811dbc" class="image"><a href="image%2015.png"><img style="width:63.9962158203125px" src="image%2015.png"/></a></figure><p id="144506f1-dc68-80d5-832d-c0c97851da11" class="">Noise Level = 750</p><p id="144506f1-dc68-8000-bc2f-fb08d9d942fc" class="">
+</p></div></div><p id="144506f1-dc68-8012-94ea-f30d880f5ee5" class="">The method works quite well when Noise Level is low, but when the noise Level becomes higher, it’s still not good enough.</p><p id="144506f1-dc68-8098-a880-c595002d9d85" class="">
+</p><p id="143506f1-dc68-80c2-8304-d5389645cf4e" class=""><strong>1.4 Iterative Denoising</strong></p><p id="143506f1-dc68-806d-9d17-d49c8ef3bd33" class="">Using <strong>Iterative Denoising based on the equation and </strong>Using <code>i_start = 10</code>:</p><figure id="144506f1-dc68-80e9-a872-fd979cc3f61a" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><div class="equation-container"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mtable width="100%"><mtr><mtd width="50%"></mtd><mtd><mrow><msub><mi>x</mi><msup><mi>t</mi><mo mathvariant="normal" lspace="0em" rspace="0em">′</mo></msup></msub><mo>=</mo><mfrac><mrow><msqrt><msub><mover accent="true"><mi>α</mi><mo>ˉ</mo></mover><msup><mi>t</mi><mo mathvariant="normal" lspace="0em" rspace="0em">′</mo></msup></msub></msqrt><msub><mi>β</mi><mi>t</mi></msub></mrow><mrow><mn>1</mn><mo>−</mo><msub><mover accent="true"><mi>α</mi><mo>ˉ</mo></mover><mi>t</mi></msub></mrow></mfrac><msub><mi>x</mi><mn>0</mn></msub><mo>+</mo><mtext>    </mtext><mfrac><mrow><msqrt><msub><mi>α</mi><mi>t</mi></msub></msqrt><mo stretchy="false">(</mo><mn>1</mn><mo>−</mo><msub><mover accent="true"><mi>α</mi><mo>ˉ</mo></mover><msup><mi>t</mi><mo mathvariant="normal" lspace="0em" rspace="0em">′</mo></msup></msub><mo stretchy="false">)</mo></mrow><mrow><mn>1</mn><mo>−</mo><msub><mover accent="true"><mi>α</mi><mo>ˉ</mo></mover><mi>t</mi></msub></mrow></mfrac><msub><mi>x</mi><mi>t</mi></msub><mo>+</mo><mtext>    </mtext><msub><mi>v</mi><mi>σ</mi></msub></mrow></mtd><mtd width="50%"></mtd><mtd><mtext>(A.3)</mtext></mtd></mtr></mtable><annotation encoding="application/x-tex">x_{t&#x27;} = \frac{\sqrt{\bar\alpha_{t&#x27;}}\beta_t}{1 - \bar\alpha_t} x_0 +        \frac{\sqrt{\alpha_t}(1 - \bar\alpha_{t&#x27;})}{1 - \bar\alpha_t} x_t +        v_\sigma\tag{A.3}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.328em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathnormal mtight">t</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6828em;"><span style="top:-2.786em;margin-right:0.0714em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mtight">′</span></span></span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.3069em;vertical-align:-0.836em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.4709em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord"><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.5678em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal" style="margin-right:0.0037em;">α</span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.2222em;"><span class="mord">ˉ</span></span></span></span></span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2806em;"><span style="top:-2.55em;margin-left:-0.0037em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord sqrt"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.7939em;"><span class="svg-align" style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord" style="padding-left:0.833em;"><span class="mord"><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.5678em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal" style="margin-right:0.0037em;">α</span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.2222em;"><span class="mord">ˉ</span></span></span></span></span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.328em;"><span style="top:-2.55em;margin-left:-0.0037em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathnormal mtight">t</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6828em;"><span style="top:-2.786em;margin-right:0.0714em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mtight">′</span></span></span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span><span style="top:-2.7539em;"><span class="pstrut" style="height:3em;"></span><span class="hide-tail" style="min-width:0.853em;height:1.08em;"><svg xmlns="http://www.w3.org/2000/svg" width='400em' height='1.08em' viewBox='0 0 400000 1080' preserveAspectRatio='xMinYMin slice'><path d='M95,702
+c-2.7,0,-7.17,-2.7,-13.5,-8c-5.8,-5.3,-9.5,-10,-9.5,-14
+c0,-2,0.3,-3.3,1,-4c1.3,-2.7,23.83,-20.7,67.5,-54
+c44.2,-33.3,65.8,-50.3,66.5,-51c1.3,-1.3,3,-2,5,-2c4.7,0,8.7,3.3,12,10
+s173,378,173,378c0.7,0,35.3,-71,104,-213c68.7,-142,137.5,-285,206.5,-429
+c69,-144,104.5,-217.7,106.5,-221
+l0 -0
+c5.3,-9.3,12,-14,20,-14
+H400000v40H845.2724
+s-225.272,467,-225.272,467s-235,486,-235,486c-2.7,4.7,-9,7,-19,7
+c-6,0,-10,-1,-12,-3s-194,-422,-194,-422s-65,47,-65,47z
+M834 80h400000v40h-400000z'/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2461em;"><span></span></span></span></span></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05278em;">β</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2806em;"><span style="top:-2.55em;margin-left:-0.0528em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.836em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:2.2907em;vertical-align:-0.836em;"></span><span class="mord">    </span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.4547em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord"><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.5678em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal" style="margin-right:0.0037em;">α</span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.2222em;"><span class="mord">ˉ</span></span></span></span></span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2806em;"><span style="top:-2.55em;margin-left:-0.0037em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.7047em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord sqrt"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.7253em;"><span class="svg-align" style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord" style="padding-left:0.833em;"><span class="mord"><span class="mord mathnormal" style="margin-right:0.0037em;">α</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2806em;"><span style="top:-2.55em;margin-left:-0.0037em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span><span style="top:-2.6853em;"><span class="pstrut" style="height:3em;"></span><span class="hide-tail" style="min-width:0.853em;height:1.08em;"><svg xmlns="http://www.w3.org/2000/svg" width='400em' height='1.08em' viewBox='0 0 400000 1080' preserveAspectRatio='xMinYMin slice'><path d='M95,702
+c-2.7,0,-7.17,-2.7,-13.5,-8c-5.8,-5.3,-9.5,-10,-9.5,-14
+c0,-2,0.3,-3.3,1,-4c1.3,-2.7,23.83,-20.7,67.5,-54
+c44.2,-33.3,65.8,-50.3,66.5,-51c1.3,-1.3,3,-2,5,-2c4.7,0,8.7,3.3,12,10
+s173,378,173,378c0.7,0,35.3,-71,104,-213c68.7,-142,137.5,-285,206.5,-429
+c69,-144,104.5,-217.7,106.5,-221
+l0 -0
+c5.3,-9.3,12,-14,20,-14
+H400000v40H845.2724
+s-225.272,467,-225.272,467s-235,486,-235,486c-2.7,4.7,-9,7,-19,7
+c-6,0,-10,-1,-12,-3s-194,-422,-194,-422s-65,47,-65,47z
+M834 80h400000v40h-400000z'/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.3147em;"><span></span></span></span></span></span><span class="mopen">(</span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord"><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.5678em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal" style="margin-right:0.0037em;">α</span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.2222em;"><span class="mord">ˉ</span></span></span></span></span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.328em;"><span style="top:-2.55em;margin-left:-0.0037em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathnormal mtight">t</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6828em;"><span style="top:-2.786em;margin-right:0.0714em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mtight">′</span></span></span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.836em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2806em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord">    </span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">σ</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span><span class="tag"><span class="strut" style="height:2.3069em;vertical-align:-0.836em;"></span><span class="mord text"><span class="mord">(</span><span class="mord"><span class="mord">A.3</span></span><span class="mord">)</span></span></span></span></span></span></div></figure><p id="144506f1-dc68-80aa-a086-f52aa83bf50a" class="">
+</p><div id="144506f1-dc68-8020-90ef-cff6a04281f9" class="column-list"><div id="144506f1-dc68-8081-bf11-e9101e97fe33" style="width:16.666666666666668%" class="column"><figure id="144506f1-dc68-8036-b8e0-d47904758cae" class="image"><a href="image%2016.png"><img style="width:63.9962158203125px" src="image%2016.png"/></a></figure><p id="144506f1-dc68-808a-9d87-c4491e9c0a57" class="">690</p></div><div id="144506f1-dc68-80de-a38b-cf71f11ba08c" style="width:16.666666666666668%" class="column"><figure id="144506f1-dc68-8033-bdea-daaddc3f770a" class="image"><a href="image%2017.png"><img style="width:63.9962158203125px" src="image%2017.png"/></a></figure><p id="144506f1-dc68-801a-af0b-dd58a381c43c" class="">540</p></div><div id="144506f1-dc68-8045-b3aa-d30ad3895bef" style="width:16.666666666666668%" class="column"><figure id="144506f1-dc68-8060-a991-c664d92061de" class="image"><a href="image%2018.png"><img style="width:63.9962158203125px" src="image%2018.png"/></a></figure><p id="144506f1-dc68-8093-9dc3-d8b0e4d7fc8b" class="">390</p></div><div id="144506f1-dc68-80ea-a251-e9300b0fb232" style="width:16.666666666666668%" class="column"><figure id="144506f1-dc68-80a6-8ad0-e46533b9b9e0" class="image"><a href="image%2019.png"><img style="width:63.9962158203125px" src="image%2019.png"/></a></figure><p id="144506f1-dc68-809d-b7a2-c061cad94e4c" class="">240</p></div><div id="144506f1-dc68-80e2-90eb-d2171aa5d481" style="width:16.666666666666668%" class="column"><figure id="144506f1-dc68-8022-86b9-f05dc8533d28" class="image"><a href="image%2020.png"><img style="width:63.9962158203125px" src="image%2020.png"/></a></figure><p id="144506f1-dc68-8032-8380-fb18606158a6" class="">90</p></div><div id="144506f1-dc68-80fd-b868-dac260a8384b" style="width:16.666666666666664%" class="column"><figure id="144506f1-dc68-8053-bfd8-f060b30cc860" class="image"><a href="image%2021.png"><img style="width:56.1363639831543px" src="image%2021.png"/></a></figure><p id="144506f1-dc68-8020-9e9f-c75675c2606a" class="">final</p></div></div><div id="144506f1-dc68-80aa-84e4-e680e0f7bf99" class="column-list"><div id="144506f1-dc68-80a4-8d21-ec2f0ed0c4d3" style="width:33.333333333333336%" class="column"><figure id="144506f1-dc68-80f5-a1e7-e0535e26c46a" class="image"><a href="image%206.png"><img style="width:63.9962158203125px" src="image%206.png"/></a></figure><p id="144506f1-dc68-8083-9995-c053b3cfe55c" class="">original</p></div><div id="144506f1-dc68-80a2-b4c6-e5397ef26b9f" style="width:33.333333333333336%" class="column"><figure id="144506f1-dc68-8085-ad73-e627b5a86aa8" class="image"><a href="image%2015.png"><img style="width:63.9962158203125px" src="image%2015.png"/></a></figure><p id="144506f1-dc68-80ce-952a-d7716b83ad07" class="">one-step</p></div><div id="144506f1-dc68-80a7-8532-dd48d100275e" style="width:33.33333333333333%" class="column"><figure id="144506f1-dc68-80b4-9f3a-dea0556fc3fd" class="image"><a href="image%2012.png"><img style="width:63.9962158203125px" src="image%2012.png"/></a></figure><p id="144506f1-dc68-80d1-9f65-e7f173bb72b7" class="">gaussian</p></div></div><p id="144506f1-dc68-8093-95fb-f5262d2e8e59" class="">The denoise result is much better than the other 2 methods.</p><p id="144506f1-dc68-808d-9686-ee8703dd26c2" class="">
+</p><p id="143506f1-dc68-806a-8d5e-ebf39bbe6694" class=""><strong>1.5 Diffusion Model Sampling</strong></p><p id="143506f1-dc68-806b-9213-f8ead704f775" class="">I passed in random noise and used the <code>iterative_denoise</code> to denoise pure noise. <br/>• Show 5 sampled images.<br/></p><div id="144506f1-dc68-809e-acad-c2d233a1f2dc" class="column-list"><div id="144506f1-dc68-8060-9c85-f9e738e77355" style="width:20%" class="column"><figure id="143506f1-dc68-8065-bf81-dcf275307141" class="image"><a href="image%2022.png"><img style="width:63.9962158203125px" src="image%2022.png"/></a></figure></div><div id="144506f1-dc68-80e0-ae75-cf56bb1d04f3" style="width:20%" class="column"><figure id="143506f1-dc68-8097-873b-d4b2c1d23744" class="image"><a href="image%2023.png"><img style="width:63.9962158203125px" src="image%2023.png"/></a></figure></div><div id="144506f1-dc68-80f2-8520-dffd7f3ab6b0" style="width:20%" class="column"><figure id="143506f1-dc68-80cc-adbf-de96374e9ef5" class="image"><a href="image%2024.png"><img style="width:63.9962158203125px" src="image%2024.png"/></a></figure></div><div id="144506f1-dc68-80ae-99ab-fb9cdec1abae" style="width:20%" class="column"><figure id="143506f1-dc68-8089-ada9-e759676a15b2" class="image"><a href="image%2025.png"><img style="width:63.9962158203125px" src="image%2025.png"/></a></figure></div><div id="144506f1-dc68-80b8-bb97-f35fb159930a" style="width:20%" class="column"><figure id="143506f1-dc68-8051-b2e1-d9559a95998f" class="image"><a href="image%2026.png"><img style="width:63.9962158203125px" src="image%2026.png"/></a></figure></div></div><p id="143506f1-dc68-808c-943d-f6220fd5d0ba" class="">
+</p><p id="143506f1-dc68-80f3-9387-d1a7086b1e97" class=""><strong>1.6 Classifier-Free Guidance (CFG)</strong></p><figure id="144506f1-dc68-804c-a8c1-fc5f8fd1960d" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><div class="equation-container"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mtable width="100%"><mtr><mtd width="50%"></mtd><mtd><mrow><mi>ϵ</mi><mo>=</mo><msub><mi>ϵ</mi><mi>u</mi></msub><mo>+</mo><mi>γ</mi><mtext>    </mtext><mo stretchy="false">(</mo><msub><mi>ϵ</mi><mi>c</mi></msub><mo>−</mo><msub><mi>ϵ</mi><mi>u</mi></msub><mo stretchy="false">)</mo></mrow></mtd><mtd width="50%"></mtd><mtd><mtext>(A.4)</mtext></mtd></mtr></mtable><annotation encoding="application/x-tex">\epsilon = \epsilon_u + \gamma        (\epsilon_c - \epsilon_u) \tag{A.4}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">ϵ</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">ϵ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">u</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.05556em;">γ</span><span class="mord">    </span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">ϵ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">c</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal">ϵ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">u</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span><span class="tag"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord text"><span class="mord">(</span><span class="mord"><span class="mord">A.4</span></span><span class="mord">)</span></span></span></span></span></span></div></figure><p id="144506f1-dc68-80e9-9284-df4fde66ef15" class="">using the <strong>Classifier-Free Guidance, we use </strong><code>&quot;a high quality photo&quot;</code> prompt to improve generation.</p><div id="144506f1-dc68-807e-9d69-fd997284a171" class="column-list"><div id="144506f1-dc68-80cb-a027-c0648fac43bc" style="width:20%" class="column"><figure id="143506f1-dc68-8097-b176-c6bea457fe23" class="image"><a href="image%2027.png"><img style="width:63.9962158203125px" src="image%2027.png"/></a></figure></div><div id="144506f1-dc68-8050-8e26-f6386f8baf4a" style="width:20%" class="column"><figure id="143506f1-dc68-804b-af5c-f267ef8cb898" class="image"><a href="image%2028.png"><img style="width:63.9962158203125px" src="image%2028.png"/></a></figure></div><div id="144506f1-dc68-8055-88a6-d824c2e74820" style="width:20%" class="column"><figure id="143506f1-dc68-805c-8b12-e3b831942352" class="image"><a href="image%2029.png"><img style="width:63.9962158203125px" src="image%2029.png"/></a></figure></div><div id="144506f1-dc68-8095-90d4-f867828ce105" style="width:20%" class="column"><figure id="143506f1-dc68-80f0-bd4d-d2e801d0e04c" class="image"><a href="image%2030.png"><img style="width:63.9962158203125px" src="image%2030.png"/></a></figure></div><div id="144506f1-dc68-8034-a318-d52bf35f50d2" style="width:20%" class="column"><figure id="143506f1-dc68-8093-9fdb-de39010d797c" class="image"><a href="image%2031.png"><img style="width:63.9962158203125px" src="image%2031.png"/></a></figure></div></div><p id="144506f1-dc68-80f8-ad7a-e92628b92ba3" class="">The ouputs obviously have better quality.</p><p id="144506f1-dc68-8049-81c5-d72d20e9ace7" class="">
+</p><p id="143506f1-dc68-80ee-8500-cf57252e01b4" class=""><strong>1.7 Image-to-image Translation</strong></p><p id="144506f1-dc68-80eb-90d7-e7362209eb36" class="">In this section, we add noise the the original image, and then we denoise them, to get a higher diversity.</p><p id="144506f1-dc68-8093-9883-de364e367f85" class="">i_start:</p><p id="144506f1-dc68-806d-be90-cf361b455cf7" class="">
+</p><div id="143506f1-dc68-80ba-af07-f5d14c99db41" class="column-list"><div id="143506f1-dc68-805b-9c65-c59427e6ee3a" style="width:14.285714285714288%" class="column"><p id="144506f1-dc68-80f3-8433-ee8fb6e433c5" class="">1</p><figure id="143506f1-dc68-80ae-aa7f-e94ee65dade1" class="image"><a href="image%2032.png"><img style="width:63.9962158203125px" src="image%2032.png"/></a></figure></div><div id="143506f1-dc68-8084-a8e7-da9ec8cfbea0" style="width:14.285714285714285%" class="column"><p id="144506f1-dc68-80f7-ad65-f7b98a2838df" class="">3</p><figure id="143506f1-dc68-80ba-a1fc-f57f46ddbf5e" class="image"><a href="image%2033.png"><img style="width:63.9962158203125px" src="image%2033.png"/></a></figure></div><div id="143506f1-dc68-80cf-9ef1-ca21e0c87779" style="width:14.28571428571429%" class="column"><p id="144506f1-dc68-80cd-8cc1-f2d56315fe36" class="">5</p><figure id="143506f1-dc68-8004-918b-ea2116ee1e5d" class="image"><a href="image%2034.png"><img style="width:63.9962158203125px" src="image%2034.png"/></a></figure></div><div id="143506f1-dc68-80f2-91b7-e81b846105f0" style="width:14.285714285714288%" class="column"><p id="144506f1-dc68-8096-8714-fe29890289b5" class="">7</p><figure id="143506f1-dc68-8057-ac4f-d94883ecfa3f" class="image"><a href="image%2035.png"><img style="width:63.9962158203125px" src="image%2035.png"/></a></figure></div><div id="143506f1-dc68-8093-a863-faa02a1b21c0" style="width:14.285714285714288%" class="column"><p id="144506f1-dc68-80ff-bf3c-e329c7567ba2" class="">10</p><figure id="143506f1-dc68-80a8-a344-e6304a065b3b" class="image"><a href="image%2036.png"><img style="width:63.9962158203125px" src="image%2036.png"/></a></figure></div><div id="143506f1-dc68-809f-b91d-f594b6d67623" style="width:14.285714285714285%" class="column"><p id="144506f1-dc68-80b8-88e6-c556a1e7a130" class="">20</p><figure id="143506f1-dc68-802c-8d86-ef0e0d8d9934" class="image"><a href="image%2037.png"><img style="width:63.9962158203125px" src="image%2037.png"/></a></figure></div><div id="143506f1-dc68-8045-82ff-fde019ff5fe9" style="width:14.285714285714285%" class="column"><p id="144506f1-dc68-804f-b6d6-dd40f09ce458" class="">original</p><figure id="143506f1-dc68-8069-8818-ca326f0d96e9" class="image"><a href="image%206.png"><img style="width:60px" src="image%206.png"/></a></figure><p id="144506f1-dc68-8097-ae41-ee1e78527ec3" class="">
+</p></div></div><p id="143506f1-dc68-8050-b56c-e9b0ede07ad0" class="">
+</p><div id="143506f1-dc68-806e-80b4-d166acae6c5b" class="column-list"><div id="143506f1-dc68-80d1-b1bc-de1e23dae800" style="width:14.285714285714285%" class="column"><figure id="143506f1-dc68-8048-965a-d2341cb01460" class="image"><a href="image%2038.png"><img style="width:63.9962158203125px" src="image%2038.png"/></a></figure></div><div id="143506f1-dc68-80c0-b6c4-fdfe4437f081" style="width:14.285714285714285%" class="column"><figure id="143506f1-dc68-80c6-9d13-e3e5540b89ea" class="image"><a href="image%2039.png"><img style="width:63.9962158203125px" src="image%2039.png"/></a></figure></div><div id="143506f1-dc68-800e-8345-c903fe8c08f4" style="width:14.285714285714285%" class="column"><figure id="143506f1-dc68-807d-9de0-ed98b6b0f164" class="image"><a href="image%2040.png"><img style="width:63.9962158203125px" src="image%2040.png"/></a></figure></div><div id="143506f1-dc68-8000-9acb-ea5e1bd1a60b" style="width:14.285714285714285%" class="column"><figure id="143506f1-dc68-8049-8914-f1204d430ecf" class="image"><a href="image%2041.png"><img style="width:63.9962158203125px" src="image%2041.png"/></a></figure></div><div id="143506f1-dc68-80c2-a516-c0a10b3feed5" style="width:14.285714285714285%" class="column"><figure id="143506f1-dc68-8050-a546-f12faab0f117" class="image"><a href="image%2042.png"><img style="width:63.9962158203125px" src="image%2042.png"/></a></figure></div><div id="143506f1-dc68-8029-bb54-f299a55e1cf7" style="width:14.285714285714285%" class="column"><figure id="143506f1-dc68-809d-bfb9-f401d695dd27" class="image"><a href="image%2043.png"><img style="width:63.9962158203125px" src="image%2043.png"/></a></figure></div><div id="143506f1-dc68-80c4-8755-f124e4f8df60" style="width:14.285714285714285%" class="column"><figure id="143506f1-dc68-803e-896d-c1fb22ab8bfb" class="image"><a href="ucb.jpg"><img style="width:63.9962158203125px" src="ucb.jpg"/></a></figure></div></div><p id="143506f1-dc68-8086-af7a-fbf468f43691" class="">
+</p><div id="143506f1-dc68-80cb-8f27-feb1ceebfc1d" class="column-list"><div id="143506f1-dc68-80b8-915a-e72e7bb45b88" style="width:14.285714285714285%" class="column"><figure id="143506f1-dc68-8001-a67f-db56fcaa3a3c" class="image"><a href="image%2044.png"><img style="width:44.54545593261719px" src="image%2044.png"/></a></figure></div><div id="143506f1-dc68-8003-9c13-e7e94d2a4d8b" style="width:14.285714285714285%" class="column"><figure id="143506f1-dc68-8005-bb82-fe81ac7362dc" class="image"><a href="image%2045.png"><img style="width:59.64015197753906px" src="image%2045.png"/></a></figure></div><div id="143506f1-dc68-8064-a57e-f1cbfaeb9132" style="width:14.285714285714288%" class="column"><figure id="143506f1-dc68-80ef-874a-c2c71233c1b8" class="image"><a href="image%2046.png"><img style="width:63.9962158203125px" src="image%2046.png"/></a></figure></div><div id="143506f1-dc68-80bd-b8e0-f5fc48eacff1" style="width:14.285714285714288%" class="column"><figure id="143506f1-dc68-80ac-96dd-e237d3dfdb4d" class="image"><a href="image%2047.png"><img style="width:63.9962158203125px" src="image%2047.png"/></a></figure></div><div id="143506f1-dc68-80c4-845b-d33e64c32f36" style="width:14.285714285714288%" class="column"><figure id="143506f1-dc68-80e3-b180-e211a9e60864" class="image"><a href="image%2048.png"><img style="width:63.9962158203125px" src="image%2048.png"/></a></figure></div><div id="143506f1-dc68-8058-b4a6-ffda29b12d9d" style="width:14.285714285714288%" class="column"><figure id="143506f1-dc68-80c4-82d5-c13e347e737d" class="image"><a href="image%2049.png"><img style="width:63.9962158203125px" src="image%2049.png"/></a></figure></div><div id="143506f1-dc68-8067-93fc-c9ee159e9613" style="width:14.285714285714288%" class="column"><figure id="143506f1-dc68-80b0-8db9-cd3e423ce735" class="image"><a href="japan.jpg"><img style="width:63.9962158203125px" src="japan.jpg"/></a></figure></div></div><p id="143506f1-dc68-80d3-a257-e96c1dce3524" class=""><strong>1.7.1 Editing Hand-Drawn and Web Images</strong></p><p id="144506f1-dc68-8035-9b47-c6f5cf91c102" class="">Also, I playe with several nonrealistic images, the avocado is given,  the lion was downloaded from the internet and the rest two are hand-drawn images.</p><div id="143506f1-dc68-80b1-bcab-d242d22c56c2" class="column-list"><div id="143506f1-dc68-804d-b2fe-f713bb1a9333" style="width:14.285714285714288%" class="column"><figure id="143506f1-dc68-80b5-b0c5-c388b719d9a6" class="image"><a href="image%2050.png"><img style="width:63.9962158203125px" src="image%2050.png"/></a></figure></div><div id="143506f1-dc68-806e-856a-c94013445df5" style="width:14.285714285714288%" class="column"><figure id="143506f1-dc68-8086-bda8-e105c1eaf82b" class="image"><a href="image%2051.png"><img style="width:63.9962158203125px" src="image%2051.png"/></a></figure></div><div id="143506f1-dc68-80d3-bb30-c879d360b1ee" style="width:14.285714285714288%" class="column"><figure id="143506f1-dc68-80be-ab3d-e9ab44630624" class="image"><a href="image%2052.png"><img style="width:63.9962158203125px" src="image%2052.png"/></a></figure></div><div id="143506f1-dc68-8042-a9c2-fca7d48699f6" style="width:14.285714285714288%" class="column"><figure id="143506f1-dc68-80c4-af7c-f21aa3ba53e6" class="image"><a href="image%2053.png"><img style="width:63.9962158203125px" src="image%2053.png"/></a></figure></div><div id="143506f1-dc68-809f-b608-c66c4d936467" style="width:14.285714285714288%" class="column"><figure id="143506f1-dc68-8002-9f13-c87e4fb5e7a0" class="image"><a href="image%2054.png"><img style="width:63.9962158203125px" src="image%2054.png"/></a></figure></div><div id="143506f1-dc68-80bf-ba95-e9283251ba72" style="width:14.285714285714285%" class="column"><figure id="143506f1-dc68-807a-b236-e902a474cfbf" class="image"><a href="image%2055.png"><img style="width:63.9962158203125px" src="image%2055.png"/></a></figure></div><div id="143506f1-dc68-80ce-93fe-fce9b6d58868" style="width:14.285714285714285%" class="column"><figure id="143506f1-dc68-8088-ba5c-e98d5b1863c2" class="image"><a href="image%2056.png"><img style="width:63.9962158203125px" src="image%2056.png"/></a></figure></div></div><p id="143506f1-dc68-8048-bc1e-db0df53ec6f3" class="">
+</p><div id="143506f1-dc68-8074-8131-edc3cc885955" class="column-list"><div id="143506f1-dc68-80ca-9eea-fac75749ddd0" style="width:14.285714285714288%" class="column"><figure id="143506f1-dc68-8040-ada8-f6660fa43ba9" class="image"><a href="image%2057.png"><img style="width:63.9962158203125px" src="image%2057.png"/></a></figure></div><div id="143506f1-dc68-8026-88f4-cf64461f143b" style="width:14.285714285714288%" class="column"><figure id="143506f1-dc68-80dc-b982-eaacf8e05594" class="image"><a href="image%2058.png"><img style="width:63.9962158203125px" src="image%2058.png"/></a></figure></div><div id="143506f1-dc68-8022-a805-ecf3fab4c12a" style="width:14.285714285714288%" class="column"><figure id="143506f1-dc68-80d6-9979-d8a119746f1c" class="image"><a href="image%2059.png"><img style="width:63.9962158203125px" src="image%2059.png"/></a></figure></div><div id="143506f1-dc68-80bb-92ac-d48fb9617943" style="width:14.285714285714288%" class="column"><figure id="143506f1-dc68-809d-b9e6-d091d6f2543e" class="image"><a href="image%2060.png"><img style="width:63.9962158203125px" src="image%2060.png"/></a></figure></div><div id="143506f1-dc68-80c0-a485-cac557e073a0" style="width:14.285714285714288%" class="column"><figure id="143506f1-dc68-802f-9865-fb003f4e5fda" class="image"><a href="image%2061.png"><img style="width:63.9962158203125px" src="image%2061.png"/></a></figure></div><div id="143506f1-dc68-80d1-bb14-c564b6800282" style="width:14.285714285714285%" class="column"><figure id="143506f1-dc68-8016-8af3-f69384bae01b" class="image"><a href="image%2062.png"><img style="width:63.9962158203125px" src="image%2062.png"/></a></figure></div><div id="143506f1-dc68-8078-a77f-d71b934aead7" style="width:14.285714285714285%" class="column"><figure id="143506f1-dc68-809c-a054-d03b1c7cc5a4" class="image"><a href="lion.jpg"><img style="width:41.54356002807617px" src="lion.jpg"/></a></figure></div></div><p id="143506f1-dc68-80c5-a8e5-c0530abbbc09" class="">
+</p><div id="143506f1-dc68-8098-b106-f9f4be03599e" class="column-list"><div id="143506f1-dc68-80fa-88f3-caf5c97ccd85" style="width:14.285714285714288%" class="column"><figure id="143506f1-dc68-8033-b799-ce7c6adb001e" class="image"><a href="image%2063.png"><img style="width:63.9962158203125px" src="image%2063.png"/></a></figure></div><div id="143506f1-dc68-8084-a35a-d2d4991f412f" style="width:14.285714285714288%" class="column"><figure id="143506f1-dc68-8099-abd3-f365fc168070" class="image"><a href="image%2064.png"><img style="width:63.9962158203125px" src="image%2064.png"/></a></figure></div><div id="143506f1-dc68-80aa-b5d9-c7a5025946bc" style="width:14.285714285714288%" class="column"><figure id="143506f1-dc68-8062-952a-e48abe4d5f76" class="image"><a href="image%2065.png"><img style="width:63.9962158203125px" src="image%2065.png"/></a></figure></div><div id="143506f1-dc68-80ca-a344-d722f46e3d4c" style="width:14.285714285714288%" class="column"><figure id="143506f1-dc68-809e-a35e-e91433123cda" class="image"><a href="image%2066.png"><img style="width:63.9962158203125px" src="image%2066.png"/></a></figure></div><div id="143506f1-dc68-80af-b62f-f9681a5f9ff6" style="width:14.285714285714288%" class="column"><figure id="143506f1-dc68-8073-80a9-ecc87a9edf60" class="image"><a href="image%2067.png"><img style="width:63.9962158203125px" src="image%2067.png"/></a></figure></div><div id="143506f1-dc68-804a-a0b8-dbe8ce35c1bd" style="width:14.285714285714285%" class="column"><figure id="143506f1-dc68-80f2-8a68-e2aae313998b" class="image"><a href="image%2068.png"><img style="width:63.9962158203125px" src="image%2068.png"/></a></figure></div><div id="143506f1-dc68-8095-8733-ee9fd1fd9ad8" style="width:14.285714285714285%" class="column"><figure id="143506f1-dc68-80b3-84b3-f60a436bced2" class="image"><a href="image%2069.png"><img style="width:63.9962158203125px" src="image%2069.png"/></a></figure></div></div><p id="143506f1-dc68-80a3-b157-fc782f84ddf6" class="">
+</p><div id="143506f1-dc68-80a1-afac-f4affa1f1f09" class="column-list"><div id="143506f1-dc68-8061-90e7-ea8f578d0f43" style="width:14.285714285714288%" class="column"><figure id="143506f1-dc68-8065-851a-e89a3120f0aa" class="image"><a href="image%2070.png"><img style="width:63.9962158203125px" src="image%2070.png"/></a></figure></div><div id="143506f1-dc68-8004-b7c3-c52539b96b72" style="width:14.285714285714288%" class="column"><figure id="143506f1-dc68-809e-ace9-f1433af942bd" class="image"><a href="image%2071.png"><img style="width:63.9962158203125px" src="image%2071.png"/></a></figure></div><div id="143506f1-dc68-8043-ba23-fa2fe2b9f12e" style="width:14.285714285714288%" class="column"><figure id="143506f1-dc68-8098-88eb-c46e9006f7a1" class="image"><a href="image%2072.png"><img style="width:63.9962158203125px" src="image%2072.png"/></a></figure></div><div id="143506f1-dc68-8063-9bda-e009082ddeff" style="width:14.285714285714288%" class="column"><figure id="143506f1-dc68-80f8-a238-d06061cac49e" class="image"><a href="image%2073.png"><img style="width:63.9962158203125px" src="image%2073.png"/></a></figure></div><div id="143506f1-dc68-80a6-b2cc-e0fc2ec66b54" style="width:14.285714285714288%" class="column"><figure id="143506f1-dc68-803a-995a-e3053da9f8af" class="image"><a href="image%2074.png"><img style="width:63.9962158203125px" src="image%2074.png"/></a></figure></div><div id="143506f1-dc68-80c3-88fa-f00a86d2e3f0" style="width:14.285714285714285%" class="column"><figure id="143506f1-dc68-80f5-ae19-e2809e45a680" class="image"><a href="image%2075.png"><img style="width:63.9962158203125px" src="image%2075.png"/></a></figure></div><div id="143506f1-dc68-8002-b0a6-e15be0e0f5b5" style="width:14.285714285714285%" class="column"><figure id="143506f1-dc68-8095-b6bd-c25b850b6e4e" class="image"><a href="dog.jpg"><img style="width:41.54356002807617px" src="dog.jpg"/></a></figure></div></div><p id="143506f1-dc68-80db-9dff-d57f8f25dda7" class="">
+</p><p id="143506f1-dc68-809e-b062-ddc1ee758fee" class="">
+</p><p id="143506f1-dc68-80b0-b199-f3b46f06a229" class="">
+</p><p id="143506f1-dc68-8031-99b3-e84f705c1127" class=""><strong>1.7.2 Inpainting</strong></p><p id="144506f1-dc68-805d-838d-e57bf93a4011" class="">We can implement inpainting of images using similar approaches.</p><figure id="144506f1-dc68-8035-8bf6-efd23a1f94f9" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><div class="equation-container"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mtable width="100%"><mtr><mtd width="50%"></mtd><mtd><mrow><msub><mi>x</mi><mi>t</mi></msub><mo>←</mo><mtext mathvariant="bold">m</mtext><msub><mi>x</mi><mi>t</mi></msub><mo>+</mo><mo stretchy="false">(</mo><mn>1</mn><mo>−</mo><mtext mathvariant="bold">m</mtext><mo stretchy="false">)</mo><mtext>    forward</mtext><mo stretchy="false">(</mo><msub><mi>x</mi><mrow><mi>o</mi><mi>r</mi><mi>i</mi><mi>g</mi></mrow></msub><mo separator="true">,</mo><mi>t</mi><mo stretchy="false">)</mo></mrow></mtd><mtd width="50%"></mtd><mtd><mtext>(A.5)</mtext></mtd></mtr></mtable><annotation encoding="application/x-tex">x_t \leftarrow \textbf{m} x_t + (1 - \textbf{m})        \text{forward}(x_{orig}, t) \tag{A.5}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2806em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">←</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7333em;vertical-align:-0.15em;"></span><span class="mord text"><span class="mord textbf">m</span></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2806em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1.0361em;vertical-align:-0.2861em;"></span><span class="mord text"><span class="mord textbf">m</span></span><span class="mclose">)</span><span class="mord">    </span><span class="mord text"><span class="mord">forward</span></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.02778em;">or</span><span class="mord mathnormal mtight">i</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">g</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">t</span><span class="mclose">)</span></span><span class="tag"><span class="strut" style="height:1.0361em;vertical-align:-0.2861em;"></span><span class="mord text"><span class="mord">(</span><span class="mord"><span class="mord">A.5</span></span><span class="mord">)</span></span></span></span></span></span></div></figure><p id="143506f1-dc68-8073-bb2e-fa3f1d30745b" class="">
+</p><div id="143506f1-dc68-80a5-932e-d58692110d7d" class="column-list"><div id="143506f1-dc68-8083-8cb7-c01b5c0c3baf" style="width:25%" class="column"><p id="144506f1-dc68-8008-9d26-d4552f7dea08" class="">original</p><figure id="143506f1-dc68-8014-82da-f1a5ad473f4e" class="image"><a href="image%2076.png"><img style="width:108px" src="image%2076.png"/></a></figure></div><div id="143506f1-dc68-8039-8db3-e9bf7a71446b" style="width:25%" class="column"><p id="144506f1-dc68-8079-b253-c72906a7ee27" class="">mask</p><figure id="143506f1-dc68-80c0-9c80-ead73525cb04" class="image"><a href="image%2077.png"><img style="width:120px" src="image%2077.png"/></a></figure></div><div id="143506f1-dc68-800a-841e-d600b384ceba" style="width:25%" class="column"><p id="144506f1-dc68-8090-ada3-e52b585dcad4" class="">to replace</p><figure id="143506f1-dc68-80ce-9f16-e989aca346cb" class="image"><a href="image%2078.png"><img style="width:108px" src="image%2078.png"/></a></figure></div><div id="143506f1-dc68-80d6-bf0c-c6ccfd87bb7d" style="width:25%" class="column"><p id="144506f1-dc68-8057-99cf-f85110b7899f" class="">result</p><figure id="143506f1-dc68-80f6-b8b0-eca26e6a610d" class="image"><a href="image%2079.png"><img style="width:192px" src="image%2079.png"/></a></figure></div></div><p id="143506f1-dc68-80b9-89c9-e95db31f7537" class="">
+</p><div id="143506f1-dc68-80d9-9497-d52333a4afb3" class="column-list"><div id="143506f1-dc68-80ea-ae1f-dca2f9242470" style="width:25%" class="column"><figure id="143506f1-dc68-808d-91db-e2b84581ece7" class="image"><a href="image%2080.png"><img style="width:132px" src="image%2080.png"/></a></figure></div><div id="143506f1-dc68-8087-82e1-f2e63cca57d4" style="width:25%" class="column"><figure id="143506f1-dc68-8006-bb06-ee2ecab7308d" class="image"><a href="image%2081.png"><img style="width:132px" src="image%2081.png"/></a></figure></div><div id="143506f1-dc68-8074-ad89-f241190de4bf" style="width:25%" class="column"><figure id="143506f1-dc68-8032-95e5-f337f994f81f" class="image"><a href="image%2082.png"><img style="width:96px" src="image%2082.png"/></a></figure></div><div id="143506f1-dc68-8080-a0e7-c9af9ea9d0de" style="width:25%" class="column"><figure id="143506f1-dc68-80fc-9be9-edd4acac50e9" class="image"><a href="image%2083.png"><img style="width:132px" src="image%2083.png"/></a></figure></div></div><p id="143506f1-dc68-80f4-94e8-e5678ad6e592" class="">The mushroom soup in Mario Restaurant, the model is replaced with an object like a sprite egg</p><div id="143506f1-dc68-8077-9862-cc28c4b9f22c" class="column-list"><div id="143506f1-dc68-8087-a0af-fe74ae951499" style="width:25%" class="column"><figure id="143506f1-dc68-8077-a14d-e7e0f45721d7" class="image"><a href="image%2084.png"><img style="width:132px" src="image%2084.png"/></a></figure></div><div id="143506f1-dc68-8076-a73f-efda4960c8d6" style="width:25%" class="column"><figure id="143506f1-dc68-8080-b511-e6e487c61939" class="image"><a href="image%2085.png"><img style="width:108px" src="image%2085.png"/></a></figure></div><div id="143506f1-dc68-800e-9dc8-f3e97cf0a6a0" style="width:25%" class="column"><figure id="143506f1-dc68-8030-ad61-fe823b457f20" class="image"><a href="image%2086.png"><img style="width:144px" src="image%2086.png"/></a></figure></div><div id="143506f1-dc68-8052-8204-ced420e94ad2" style="width:25%" class="column"><figure id="143506f1-dc68-809e-a027-d1eb07fc4265" class="image"><a href="image%2087.png"><img style="width:144px" src="image%2087.png"/></a></figure></div></div><p id="143506f1-dc68-8032-aeb8-fd72dd8b01b5" class="">A girl stands in the dark, and the model replaces the girl with someone else. However, due to the large number of cutouts, the photo is a little inconsistent, but I think the model has successfully connected the colors at the bottom of the photo. Without special training, I think this result is pretty good</p><p id="143506f1-dc68-8070-9f35-d8b5547a457e" class="">
+</p><p id="143506f1-dc68-80de-9173-c86e4576ab42" class="">
+</p><p id="143506f1-dc68-806d-aa98-d823a278575b" class=""><strong>1.7.3 Text-Conditional Image-to-image Translation</strong></p><p id="144506f1-dc68-80d2-8713-c5840b6e17ec" class="">Here, I use prompt to guide the generation procedure.</p><p id="144506f1-dc68-8087-ba86-ff22b242a995" class="">
+</p><p id="144506f1-dc68-8042-b798-fa7eeb6e05e7" class="">i_start=</p><div id="144506f1-dc68-8051-91af-d81ceb27dda7" class="column-list"><div id="144506f1-dc68-80a1-9183-d10368ce4421" style="width:14.285714285714285%" class="column"><p id="144506f1-dc68-802b-97fc-d3e7d54c8810" class="">1</p><figure id="144506f1-dc68-80bf-a099-d098c827fdc2" class="image"><a href="image%2088.png"><img style="width:63.9962158203125px" src="image%2088.png"/></a></figure></div><div id="144506f1-dc68-8008-98f6-e42e02958400" style="width:14.28571428571429%" class="column"><p id="144506f1-dc68-8082-9d2b-e635cac0b87f" class="">3</p><figure id="144506f1-dc68-8028-955d-fb53d47527b7" class="image"><a href="image%2089.png"><img style="width:63.9962158203125px" src="image%2089.png"/></a></figure></div><div id="144506f1-dc68-80c6-93eb-c2075c77173e" style="width:14.285714285714288%" class="column"><p id="144506f1-dc68-80eb-b0e8-e7a1b6c95e4a" class="">5</p><figure id="144506f1-dc68-8083-b350-fbc83596554c" class="image"><a href="image%2090.png"><img style="width:63.9962158203125px" src="image%2090.png"/></a></figure></div><div id="144506f1-dc68-806f-a09b-e7d4eac14a46" style="width:14.285714285714288%" class="column"><p id="144506f1-dc68-80d4-b46d-f41f60ef7d7c" class="">7</p><figure id="144506f1-dc68-8065-8ed1-fdf89d6cfff3" class="image"><a href="image%2091.png"><img style="width:63.9962158203125px" src="image%2091.png"/></a></figure></div><div id="144506f1-dc68-8067-ad44-d03bb8e31a06" style="width:14.285714285714288%" class="column"><p id="144506f1-dc68-804c-82d0-db66f6fa3fb3" class="">10</p><figure id="144506f1-dc68-80f3-a8c3-c77240f271bb" class="image"><a href="image%2092.png"><img style="width:63.9962158203125px" src="image%2092.png"/></a></figure></div><div id="144506f1-dc68-80dc-a1f6-defc35936d72" style="width:14.285714285714285%" class="column"><p id="144506f1-dc68-80cc-a743-e70c4c37109e" class="">20</p><figure id="144506f1-dc68-8032-912b-df262f35c9e1" class="image"><a href="image%2093.png"><img style="width:63.9962158203125px" src="image%2093.png"/></a></figure></div><div id="144506f1-dc68-80d1-b62c-d7e3a2b74860" style="width:14.285714285714285%" class="column"><p id="144506f1-dc68-800c-9f12-cf367052ed39" class="">original</p><figure id="144506f1-dc68-8056-9c05-c34c274b917b" class="image"><a href="image%2094.png"><img style="width:41.54356002807617px" src="image%2094.png"/></a></figure></div></div><p id="144506f1-dc68-8011-aa9a-c478217ed5bc" class="">this part I use the prompt of a lithograph of waterfalls </p><p id="144506f1-dc68-800e-8f44-f12454e889d3" class="">and the original image is the Yosemite Half Dome mountain</p><p id="144506f1-dc68-8022-b3f8-fb3ae035e67c" class="">
+</p><div id="144506f1-dc68-8001-982f-e177361878c6" class="column-list"><div id="144506f1-dc68-80d3-84aa-fe0677b9334b" style="width:14.285714285714288%" class="column"><figure id="144506f1-dc68-8033-b6ee-c62fecab608e" class="image"><a href="image%2095.png"><img style="width:36px" src="image%2095.png"/></a></figure></div><div id="144506f1-dc68-8020-aee8-ebeb5b3c339d" style="width:14.285714285714288%" class="column"><figure id="144506f1-dc68-800b-bbd4-eaa60b40a277" class="image"><a href="image%2096.png"><img style="width:63.9962158203125px" src="image%2096.png"/></a></figure></div><div id="144506f1-dc68-8056-9eba-e8b35d09a39d" style="width:14.285714285714288%" class="column"><figure id="144506f1-dc68-8058-b9f5-da2684557c5d" class="image"><a href="image%2097.png"><img style="width:63.9962158203125px" src="image%2097.png"/></a></figure></div><div id="144506f1-dc68-80fd-b5ec-ca257272a7e5" style="width:14.285714285714288%" class="column"><figure id="144506f1-dc68-80a5-815a-cbadcbac5984" class="image"><a href="image%2098.png"><img style="width:63.9962158203125px" src="image%2098.png"/></a></figure></div><div id="144506f1-dc68-80ec-8595-ee5568527d69" style="width:14.285714285714288%" class="column"><figure id="144506f1-dc68-8030-a4eb-cf9e4f0a54f3" class="image"><a href="image%2099.png"><img style="width:63.9962158203125px" src="image%2099.png"/></a></figure></div><div id="144506f1-dc68-80d0-9ef0-c7f5e5b9b15b" style="width:14.285714285714285%" class="column"><figure id="144506f1-dc68-8050-9b65-cbf56ca1efdd" class="image"><a href="image%20100.png"><img style="width:63.9962158203125px" src="image%20100.png"/></a></figure></div><div id="144506f1-dc68-80f1-9785-dc927daa39ec" style="width:14.285714285714285%" class="column"><figure id="144506f1-dc68-8016-a4f8-d6373673246f" class="image"><a href="image%20101.png"><img style="width:63.9962158203125px" src="image%20101.png"/></a></figure></div></div><p id="144506f1-dc68-800e-8165-cdb40a658b7d" class="">
+</p><div id="144506f1-dc68-80d1-b44b-e9299060b478" class="column-list"><div id="144506f1-dc68-800b-95d5-e0dd60398191" style="width:50%" class="column"><figure id="144506f1-dc68-80ba-8ac9-dfa9e0c25cd2" class="image"><a href="image%2095.png"><img style="width:240px" src="image%2095.png"/></a></figure></div><div id="144506f1-dc68-80bc-a460-fa85cd0f8f06" style="width:50%" class="column"><figure id="144506f1-dc68-8094-8cfa-d1bc35bf7b8a" class="image"><a href="image%20101.png"><img style="width:240px" src="image%20101.png"/></a></figure></div></div><p id="144506f1-dc68-8040-90be-fbc0eb9d31c0" class="">
+</p><p id="144506f1-dc68-803f-b017-f96ce26a1f5e" class="">
+</p><p id="144506f1-dc68-80bc-9a65-d2dc50ae6056" class="">
+</p><div id="144506f1-dc68-80a1-9e3c-d4cfffba4ee8" class="column-list"><div id="144506f1-dc68-80ce-a0a8-f43a6324b334" style="width:14.285714285714288%" class="column"><figure id="144506f1-dc68-8078-a751-e9038d8fbfb1" class="image"><a href="image%20102.png"><img style="width:63.9962158203125px" src="image%20102.png"/></a></figure></div><div id="144506f1-dc68-8013-bcdc-decc36c1a5d6" style="width:14.285714285714288%" class="column"><figure id="144506f1-dc68-80fe-b931-dd599c5c929a" class="image"><a href="image%20103.png"><img style="width:63.9962158203125px" src="image%20103.png"/></a></figure></div><div id="144506f1-dc68-80b6-b04d-fb673a90896d" style="width:14.285714285714288%" class="column"><figure id="144506f1-dc68-807c-b2fd-c44c4760e025" class="image"><a href="image%20104.png"><img style="width:63.9962158203125px" src="image%20104.png"/></a></figure></div><div id="144506f1-dc68-802a-a17b-f2a303f586c3" style="width:14.285714285714288%" class="column"><figure id="144506f1-dc68-8089-9e5e-df0718082ee9" class="image"><a href="image%20105.png"><img style="width:63.9962158203125px" src="image%20105.png"/></a></figure></div><div id="144506f1-dc68-8073-b370-e130009d539d" style="width:14.285714285714288%" class="column"><figure id="144506f1-dc68-807f-90fe-f834f089870c" class="image"><a href="image%20106.png"><img style="width:63.9962158203125px" src="image%20106.png"/></a></figure></div><div id="144506f1-dc68-805b-bd02-c75fade375a9" style="width:14.285714285714285%" class="column"><figure id="144506f1-dc68-80b0-8711-f83835c52a55" class="image"><a href="image%20107.png"><img style="width:63.9962158203125px" src="image%20107.png"/></a></figure></div><div id="144506f1-dc68-80de-a26a-eff6a175ec4b" style="width:14.285714285714285%" class="column"><figure id="144506f1-dc68-8019-9d9a-d905958ecf7f" class="image"><a href="image%20108.png"><img style="width:63.9962158203125px" src="image%20108.png"/></a></figure></div></div><p id="144506f1-dc68-80d2-b9db-f684ae3075be" class="">
+</p><p id="144506f1-dc68-808d-8ccb-cb9d1c9048da" class="">I use the prompt of an oil painting of a snowy mountain village, the roofs are covered with snow.</p><p id="144506f1-dc68-80a2-85cd-e67989ee9f8f" class="">the original image is the overlook of Universal Studio.</p><div id="144506f1-dc68-806a-9092-f45e48fc9308" class="column-list"><div id="144506f1-dc68-8025-a3cf-db46772bdc9b" style="width:50%" class="column"><figure id="144506f1-dc68-80d2-9e6b-cacf97a86661" class="image"><a href="image%20102.png"><img style="width:240px" src="image%20102.png"/></a></figure></div><div id="144506f1-dc68-80ee-ba9e-fc41247b3d3c" style="width:50%" class="column"><figure id="144506f1-dc68-800f-a850-e26dfee7550f" class="image"><a href="image%20108.png"><img style="width:240px" src="image%20108.png"/></a></figure></div></div><p id="143506f1-dc68-8080-b618-f8f32f8e5194" class="">
+</p><p id="143506f1-dc68-80b9-a8aa-fca3dda3ddca" class=""><strong>1.8 Visual Anagrams</strong></p><p id="144506f1-dc68-809c-9649-e8dc716fa91d" class="">In this section, I created pictures which look different when flipped upside down.</p><p id="144506f1-dc68-8010-a678-cbfa995aa2c3" class="">
+</p><figure id="144506f1-dc68-8073-991e-e5a3616bd5fa" class="image"><a href="image%20109.png"><img style="width:463.9583435058594px" src="image%20109.png"/></a></figure><div id="143506f1-dc68-8068-8971-f2749c7334fe" class="column-list"><div id="143506f1-dc68-803e-987c-e352c86c6c88" style="width:50%" class="column"><figure id="143506f1-dc68-806b-bd31-c8119075725a" class="image"><a href="image%20110.png"><img style="width:288px" src="image%20110.png"/></a></figure><p id="144506f1-dc68-809d-87b6-c156ee51492b" class="">an oil painting of people around a campfire</p><figure id="143506f1-dc68-8091-ba5e-d99e1baf74d1" class="image"><a href="image%20111.png"><img style="width:288px" src="image%20111.png"/></a></figure><p id="144506f1-dc68-80c8-b274-ff9c06975ab2" class="">a lithograph of waterfalls</p></div><div id="143506f1-dc68-80af-9f9a-ec7762867daa" style="width:50%" class="column"><figure id="143506f1-dc68-8087-8f80-d81555394580" class="image"><a href="image%20112.png"><img style="width:288px" src="image%20112.png"/></a></figure><p id="144506f1-dc68-80e1-ba31-d820068f8d4d" class="">An Oil Painting of an Old Man</p><figure id="143506f1-dc68-80ea-a3c6-f965b1f6bc2a" class="image"><a href="image%20113.png"><img style="width:288px" src="image%20113.png"/></a></figure><p id="144506f1-dc68-801e-b999-ccb2b8b4192f" class="">a lithograph of a skull</p></div></div><div id="143506f1-dc68-8002-b53b-d5f451d71767" class="column-list"><div id="143506f1-dc68-8083-bf13-d74738bf722b" style="width:50%" class="column"><figure id="143506f1-dc68-8093-b923-f2de807c4fc5" class="image"><a href="image%20114.png"><img style="width:288px" src="image%20114.png"/></a></figure><p id="143506f1-dc68-8015-a103-f617f7d79b41" class="">an oil painting of a snowy mountain village</p><p id="143506f1-dc68-8062-a7b6-d4752297c311" class="">
+</p><p id="143506f1-dc68-8027-bbd4-c714b051ef99" class=""><strong>1.9 Hybrid Images</strong></p></div><div id="143506f1-dc68-8043-a184-fd8374f3450a" style="width:50%" class="column"><figure id="143506f1-dc68-80ce-81d5-eaeee6c20edc" class="image"><a href="image%20115.png"><img style="width:288px" src="image%20115.png"/></a></figure><p id="143506f1-dc68-80cd-80c3-c69f25c700fa" class="">an oil painting of people around a campfire</p></div></div><p id="144506f1-dc68-806e-8bc0-e4053f4928ea" class="">In this section, I created pictures which look different when seen from near and far.</p><figure id="144506f1-dc68-8068-b03a-ca470fb83519" class="image"><a href="image%20116.png"><img style="width:362.9735107421875px" src="image%20116.png"/></a></figure><div id="143506f1-dc68-8016-a734-e05b4574a80e" class="column-list"><div id="143506f1-dc68-8077-8e59-e62cec1b8fdc" style="width:50%" class="column"><figure id="143506f1-dc68-803d-ae67-ddf57e576f40" class="image"><a href="image%20117.png"><img style="width:288px" src="image%20117.png"/></a></figure><p id="144506f1-dc68-80c1-8c9e-cca53f510cee" class="">a waterfall</p></div><div id="143506f1-dc68-8067-a3e2-cf5ab91b4463" style="width:50%" class="column"><figure id="143506f1-dc68-806f-b870-c656b7f35fb2" class="image"><a href="image%20117.png"><img style="width:60px" src="image%20117.png"/></a></figure><p id="144506f1-dc68-8077-8b9e-f1e214fdc795" class="">a skull</p></div></div><div id="143506f1-dc68-80c3-9dab-c2f15f41781b" class="column-list"><div id="143506f1-dc68-803b-8ca0-ef537a2f6bba" style="width:50%" class="column"><figure id="143506f1-dc68-80c3-87b5-cd8ed585050f" class="image"><a href="image%20118.png"><img style="width:288px" src="image%20118.png"/></a></figure><p id="144506f1-dc68-8092-91e4-d5eae64286e5" class="">an oil painting of a snowy mountain village</p></div><div id="143506f1-dc68-804d-bf11-fb07bc6c2992" style="width:50%" class="column"><figure id="143506f1-dc68-80b5-a40c-ec6da3410716" class="image"><a href="image%20118.png"><img style="width:60px" src="image%20118.png"/></a></figure><p id="144506f1-dc68-800c-9ee8-f34e0b4c8c4d" class="">An Oil Painting of an Old Man</p></div></div><div id="143506f1-dc68-8050-ae18-df8d404cbda2" class="column-list"><div id="143506f1-dc68-80b6-8397-f36bd21a0206" style="width:50%" class="column"><figure id="143506f1-dc68-8056-996f-d861ab63c602" class="image"><a href="image%20119.png"><img style="width:288px" src="image%20119.png"/></a></figure></div><div id="143506f1-dc68-809c-9d87-e4c2c12f6086" style="width:50%" class="column"><figure id="143506f1-dc68-809b-a416-dc9c63e2aa3b" class="image"><a href="image%20119.png"><img style="width:36px" src="image%20119.png"/></a></figure><p id="143506f1-dc68-80de-909f-f023ae922cea" class="">a man wearing a hat</p></div></div><p id="144506f1-dc68-8046-b85b-ea09f3e7e789" class="">An Oil Painting of People around a Campfire</p><h1 id="143506f1-dc68-8053-85b5-ca283040675a" class=""><strong>Part B: Diffusion Models from Scratch!</strong></h1><p id="144506f1-dc68-8068-9e2b-e25722937e8a" class="">The second part, we implemented the <strong>Diffusion Models from scratch using torch and MNIST dataset.</strong></p><h3 id="144506f1-dc68-800f-b4be-fd07875ae211" class=""><strong>Deliverable 1 Implementing the Unet &amp; Training a Denoiser</strong></h3><ul id="144506f1-dc68-80e0-92b8-c6417208c828" class="bulleted-list"><li style="list-style-type:disc">A visualization of the noising process using σ=[0.0,0.2,0.4,0.5,0.6,0.8,1.0]</li></ul><p id="144506f1-dc68-80f9-ac3a-f5b5ae02f0df" class="">
+</p><figure id="143506f1-dc68-8064-92d3-f82b6b3e1f7d" class="image"><a href="image%20120.png"><img style="width:707.95458984375px" src="image%20120.png"/></a></figure><ul id="143506f1-dc68-80df-a9b6-f1bd00ed7f27" class="bulleted-list"><li style="list-style-type:disc">A training loss curve plot every few iterations during the whole training process <figure id="144506f1-dc68-8060-8213-f63e49f8adfd" class="image"><a href="image%20121.png"><img style="width:538.8447265625px" src="image%20121.png"/></a></figure></li></ul><ul id="143506f1-dc68-8084-b3b0-e47b42caec04" class="bulleted-list"><li style="list-style-type:disc">Sample results on the test set after the first and the 5-th epoch.</li></ul><p id="144506f1-dc68-80ea-84cf-c8418b6b2880" class="">after the first  epoch<div class="indented"><figure id="143506f1-dc68-801b-8e67-c6b95438f6b1" class="image"><a href="image%20122.png"><img style="width:504.9810791015625px" src="image%20122.png"/></a></figure><p id="144506f1-dc68-80c3-9a25-f81c6b09fc45" class="">after the 5-th epoch</p><figure id="143506f1-dc68-800a-9c3a-d06a3b727b92" class="image"><a href="image%20123.png"><img style="width:504.9810791015625px" src="image%20123.png"/></a></figure></div></p><p id="144506f1-dc68-80f1-950e-f81a703157df" class="">
+</p><ul id="143506f1-dc68-807d-b116-cd0526b9a688" class="bulleted-list"><li style="list-style-type:disc">Sample results on the test set with out-of-distribution noise levels after the model is trained. Keep the same image and vary σ=[0.0,0.2,0.4,0.5,0.6,0.8,1.0]</li></ul><figure id="143506f1-dc68-8055-a563-d5b9863719d8" class="image"><a href="image%20124.png"><img style="width:707.9829711914062px" src="image%20124.png"/></a></figure><p id="144506f1-dc68-804a-92b0-f2ee8299deb7" class="">
+</p><h3 id="143506f1-dc68-8083-9153-cc7ea4330f24" class=""><strong>Deliverable 2 Time Conditioning to UNet</strong></h3><ul id="143506f1-dc68-8050-aae8-d01e5adee31e" class="bulleted-list"><li style="list-style-type:disc">A training loss curve plot for the time-conditioned UNet over the whole training process.<figure id="143506f1-dc68-8064-a27d-e618d410ea8e" class="image"><a href="image%20125.png"><img style="width:707.9829711914062px" src="image%20125.png"/></a></figure></li></ul><p id="144506f1-dc68-8074-a322-f4e67c1ea238" class="">
+</p><ul id="143506f1-dc68-80d0-b12c-d2f71f0e319e" class="bulleted-list"><li style="list-style-type:disc">Sampling results for the time-conditioned UNet for 5 and 20 epochs.<ul id="143506f1-dc68-8053-b78a-f1fe99ae90f3" class="bulleted-list"><li style="list-style-type:circle">Note: providing a gif is optional and can be done as a bells and whistles below.</li></ul></li></ul><div id="144506f1-dc68-80f6-80fe-c43d2bc6830d" class="column-list"><div id="144506f1-dc68-8017-b097-e11325c564b9" style="width:50%" class="column"><p id="143506f1-dc68-80b0-a3ae-e48ed216ff64" class="">epoch 5</p><figure id="143506f1-dc68-80ca-8c59-cb35920fb5de" class="image"><a href="image%20126.png"><img style="width:707.9829711914062px" src="image%20126.png"/></a></figure></div><div id="144506f1-dc68-80d2-8323-fdafbe98b794" style="width:50%" class="column"><p id="144506f1-dc68-8022-b01a-ce68f58973d2" class="">epoch 20</p><figure id="143506f1-dc68-809f-86b6-fb6fb7829911" class="image"><a href="image%20127.png"><img style="width:707.9829711914062px" src="image%20127.png"/></a></figure></div></div><p id="143506f1-dc68-80be-8176-c2866622e616" class="">
+</p><h3 id="143506f1-dc68-8082-8ef3-e7c2cf264e7a" class=""><strong>Deliverable 3 Add Class Conditioning to UNet</strong></h3><ul id="143506f1-dc68-80ed-bdb9-c96ad71ffd6a" class="bulleted-list"><li style="list-style-type:disc">A training loss curve plot for the class-conditioned UNet over the whole training process.<figure id="144506f1-dc68-80f5-b5c8-ec3f088418c2" class="image"><a href="image%20128.png"><img style="width:566.837158203125px" src="image%20128.png"/></a></figure></li></ul><ul id="143506f1-dc68-8065-ac78-c8472ba66ade" class="bulleted-list"><li style="list-style-type:disc">Sampling results for the class-conditioned UNet for 5 and 20 epochs. Generate 4 instances of each digit as shown above.</li></ul><p id="144506f1-dc68-802a-9ec6-ecc1d8715485" class=""><div class="indented"><ul id="143506f1-dc68-80c0-ba3c-ef2cba1f72cb" class="bulleted-list"><li style="list-style-type:disc">Note: providing a gif is optional and can be done as a bells and whistles below.</li></ul></div></p><div id="144506f1-dc68-80db-8088-f02b4eeeac75" class="column-list"><div id="144506f1-dc68-802c-b630-daf20fedefc1" style="width:50%" class="column"><figure id="144506f1-dc68-80d2-8b7b-ed2ca6285223" class="image"><a href="image%20129.png"><img style="width:566.837158203125px" src="image%20129.png"/></a></figure></div><div id="144506f1-dc68-808d-a25b-c61627012d18" style="width:50%" class="column"><figure id="144506f1-dc68-8093-b351-ea8a5da0751a" class="image"><a href="image%20130.png"><img style="width:260.41668701171875px" src="image%20130.png"/></a></figure></div></div><p id="144506f1-dc68-80f6-97fc-fc6c5e94c15b" class="">Note that in this part, I found that after epoch 5, the result is already quite good, only 0 and 4 number may seem not as good as results after epoch 20.</p><p id="144506f1-dc68-8095-b3c8-cb2efe333de7" class="">therefore I also sample the result after epoch 3, we can see that the generation quality is improving with the training epoch.</p><figure id="144506f1-dc68-800d-bbc5-d582fbe22cea" class="image"><a href="image%20131.png"><img style="width:566.837158203125px" src="image%20131.png"/></a></figure><p id="144506f1-dc68-8065-b029-ed5c140e63cc" class="">
+</p><p id="144506f1-dc68-80d5-9828-df0ba5179e44" class="">
+</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

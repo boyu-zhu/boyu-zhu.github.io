@@ -1,0 +1,699 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Project 4: Stitching Photo Mosaics</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+    margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-default_background {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.highlight-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.block-color-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-uiBlue { background-color: rgba(35, 131, 226, .07); }
+.select-value-color-pink { background-color: rgba(245, 224, 233, 1); }
+.select-value-color-purple { background-color: rgba(232, 222, 238, 1); }
+.select-value-color-green { background-color: rgba(219, 237, 219, 1); }
+.select-value-color-gray { background-color: rgba(227, 226, 224, 1); }
+.select-value-color-transparentGray { background-color: rgba(227, 226, 224, 0); }
+.select-value-color-translucentGray { background-color: rgba(0, 0, 0, 0.06); }
+.select-value-color-orange { background-color: rgba(250, 222, 201, 1); }
+.select-value-color-brown { background-color: rgba(238, 224, 218, 1); }
+.select-value-color-red { background-color: rgba(255, 226, 221, 1); }
+.select-value-color-yellow { background-color: rgba(253, 236, 200, 1); }
+.select-value-color-blue { background-color: rgba(211, 229, 239, 1); }
+.select-value-color-pageGlass { background-color: undefined; }
+.select-value-color-washGlass { background-color: undefined; }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="124506f1-dc68-80bd-bdfd-c83f80dd4789" class="page sans"><header><img class="page-cover-image" src="https://www.notion.so/images/page-cover/met_arnold_bocklin_1880.jpg" style="object-position:center 100%"/><h1 class="page-title">Project 4: <strong>Stitching Photo Mosaics</strong></h1><p class="page-description"></p></header><div class="page-body"><p id="124506f1-dc68-809c-bd46-e75c32ddca40" class="">-Boyu Zhu</p><h2 id="125506f1-dc68-80fa-aa08-d346be3cffa5" class="">PartA  <strong>IMAGE WARPING and MOSAICING</strong></h2><h3 id="125506f1-dc68-802c-af90-f6ca17d81b0c" class="">1 Shoot and digitize pictures</h3><p id="125506f1-dc68-8071-970c-d54753d3add1" class="">Followed the requirements and recommendations, I shooted three sets of photos. Each set is chosen with some intention.</p><p id="125506f1-dc68-80b7-94f2-c282617ea46d" class="">level 1: our apartment window and the beautiful view</p><p id="125506f1-dc68-8099-89f7-d6edae72ad11" class="">Althogh from the same spot, the shape of the apartment window seem to form different shapes through the rotation the the camera, I tried to test whether this can be aligned perfectly.</p><div id="125506f1-dc68-8072-ab22-ee13b1056944" class="column-list"><div id="125506f1-dc68-8023-b0b8-e0a9c442d78c" style="width:50%" class="column"><figure id="125506f1-dc68-80b1-9069-dcee586dc389" class="image"><a href="window_2.jpg"><img style="width:288px" src="window_2.jpg"/></a></figure></div><div id="125506f1-dc68-8031-bda8-f06fedea45db" style="width:50%" class="column"><figure id="125506f1-dc68-809e-9300-e53635e6203b" class="image"><a href="window_1.jpg"><img style="width:336px" src="window_1.jpg"/></a></figure></div></div><p id="125506f1-dc68-80d9-9e9f-e55a55423d3b" class="">level 2: my table with laptop on it </p><p id="125506f1-dc68-80e2-9581-d6a1c49a31f1" class="">There are a lot of small things on the desk and shelves, trying to see if this alignment is still possible.</p><div id="125506f1-dc68-80dc-9dbd-c2f9fb932ddf" class="column-list"><div id="125506f1-dc68-8026-9413-f7d4fbcc04c4" style="width:50%" class="column"><figure id="125506f1-dc68-8068-a414-cd6cda570d69" class="image"><a href="computer_1.jpg"><img style="width:707.9896240234375px" src="computer_1.jpg"/></a></figure></div><div id="125506f1-dc68-8082-aeae-d3320e5ebb78" style="width:50%" class="column"><figure id="125506f1-dc68-80a3-912c-cfc46c37cb57" class="image"><a href="computer_2.jpg"><img style="width:331px" src="computer_2.jpg"/></a></figure></div></div><p id="125506f1-dc68-80ef-bb1e-d1b22b87fbe4" class="">level3: Berkeley marina</p><p id="125506f1-dc68-8059-9f73-df309825168d" class="">There’re a jumble of boats and masts at Berkeley marina, it is a picture full of details.</p><div id="125506f1-dc68-802a-91e3-c9a6396dcd1f" class="column-list"><div id="125506f1-dc68-80aa-801c-e058241d56c0" style="width:50%" class="column"><figure id="125506f1-dc68-8005-8192-ec0ee59d2c3a" class="image"><a href="dock1.jpg"><img style="width:707.9896240234375px" src="dock1.jpg"/></a></figure></div><div id="125506f1-dc68-80f2-b7cd-cb02995b77f4" style="width:50%" class="column"><figure id="125506f1-dc68-8006-bae5-f4360e2e926b" class="image"><a href="dock2.jpg"><img style="width:330.9895935058594px" src="dock2.jpg"/></a></figure></div></div><p id="125506f1-dc68-8002-b9a3-ca6a776a4993" class="">And after shooting these images, I manually defined the correspondences of each two images.</p><p id="125506f1-dc68-80fb-9852-f6bde609b55a" class="">
+</p><h3 id="125506f1-dc68-80d5-a9c3-cfd8f8de972f" class=""><strong>Recover Homographies</strong></h3><p id="125506f1-dc68-8012-9507-d590fbdb7fb7" class="">Our goal is to find a homography matrix to perform the transformation. The Homography matrix can be shown as: where </p><figure id="125506f1-dc68-801e-8032-c4fbebafe320" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><div class="equation-container"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi>h</mi><mn>33</mn></msub><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">h_{33} = 1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8444em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">h</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">33</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span></span></div></figure><figure id="125506f1-dc68-80a4-a610-ce9c502a1fc4" class="image"><a href="image.png"><img style="width:322px" src="image.png"/></a></figure><p id="125506f1-dc68-8086-88b8-c22a989a74db" class="">And the transformation can be represented as:</p><figure id="125506f1-dc68-8059-9a76-ea4741c2cb2e" class="image"><a href="image%201.png"><img style="width:255px" src="image%201.png"/></a></figure><p id="125506f1-dc68-8087-88a3-f51d23abfa64" class="">to compute the H matrix, we use the following linear equation</p><figure id="125506f1-dc68-80fe-81ac-fc5883adc1e5" class="image"><a href="image%202.png"><img style="width:707.9896240234375px" src="image%202.png"/></a></figure><p id="125506f1-dc68-808d-81a2-c4e01e4fd877" class="">By including more than 4 correspondences, we’re now solving an overconstrained system using least squares.</p><p id="125506f1-dc68-805a-8126-ef380a6c25ae" class="">
+</p><h3 id="125506f1-dc68-800f-9f5c-cce03e181f6f" class=""><strong>Warp the Images</strong></h3><p id="125506f1-dc68-800f-a92d-c52cf4ca3e60" class="">
+</p><div id="125506f1-dc68-806a-9f02-d97321c79d1d" class="column-list"><div id="125506f1-dc68-8069-ae9b-e0f4b8dcd6d5" style="width:33.333333333333336%" class="column"><figure id="125506f1-dc68-8028-8d10-e1bfe4c3a44a" class="image"><a href="window_warped.png"><img style="width:707.9896240234375px" src="window_warped.png"/></a></figure></div><div id="125506f1-dc68-804d-b6ca-d37c71dbe609" style="width:33.333333333333336%" class="column"><figure id="125506f1-dc68-80fc-a319-e552a72835dc" class="image"><a href="computer_warped.png"><img style="width:2812px" src="computer_warped.png"/></a></figure></div><div id="125506f1-dc68-8094-8b80-e5664b86fea1" style="width:33.33333333333333%" class="column"><figure id="125506f1-dc68-80ab-8a33-cd9b8d78e358" class="image"><a href="dock_warped.png"><img style="width:707.9896240234375px" src="dock_warped.png"/></a></figure></div></div><p id="125506f1-dc68-80ba-aa30-ef3e72fc0bc2" class="">Now that we have the homography matrix, we can perform image warping.</p><p id="125506f1-dc68-80cc-a42b-ea5b7286e386" class="">However it’s kind of hard to do debuggin simply from eyes, therefore we can now perform “rectification” on the image.</p><p id="125506f1-dc68-80d9-924a-c969dab585d7" class="">
+</p><h3 id="125506f1-dc68-8052-9911-e7155465de40" class=""><strong>Image Rectification</strong></h3><div id="125506f1-dc68-801e-ad5d-c8208063b07d" class="column-list"><div id="125506f1-dc68-80ab-aa77-f3036b9977f0" style="width:50%" class="column"><figure id="125506f1-dc68-8062-bb9a-e588edf3a01d" class="image"><a href="window_1%201.jpg"><img style="width:707.9896240234375px" src="window_1%201.jpg"/></a></figure><p id="125506f1-dc68-8070-833e-f6304b6ccb38" class="">before</p></div><div id="125506f1-dc68-8039-9c8c-ce1fe944dc35" style="width:50%" class="column"><figure id="125506f1-dc68-8026-9951-e8666e29599b" class="image"><a href="window_rec.png"><img style="width:707.9896240234375px" src="window_rec.png"/></a></figure><p id="125506f1-dc68-8094-9e4f-fa20d6ee3a8b" class="">after</p></div></div><div id="125506f1-dc68-8004-a0c4-f1a8130afbd8" class="column-list"><div id="125506f1-dc68-80e3-b8eb-e6c438ce6a8f" style="width:56.25%" class="column"><figure id="125506f1-dc68-8057-aee4-e06b3f68dc6e" class="image"><a href="computer_1%201.jpg"><img style="width:1280px" src="computer_1%201.jpg"/></a></figure><p id="125506f1-dc68-8004-b5ff-d3a3357872c8" class="">before</p></div><div id="125506f1-dc68-8000-90f0-fc55b88552a0" style="width:43.75%" class="column"><figure id="125506f1-dc68-80a0-b34d-f0c34f67fd96" class="image"><a href="computer_rec.png"><img style="width:384px" src="computer_rec.png"/></a></figure><p id="125506f1-dc68-8041-b0db-cd830274fc87" class="">after</p></div></div><figure id="125506f1-dc68-8036-852c-c386633a37f2" class="image"><a href="image%203.png"><img style="width:266px" src="image%203.png"/></a></figure><p id="125506f1-dc68-80ef-8fd7-ec6697019c7e" class="">zoom in </p><p id="125506f1-dc68-80c3-ab1f-f39f10ed4045" class="">
+</p><p id="125506f1-dc68-8005-b837-da034de9be23" class="">
+</p><h3 id="125506f1-dc68-8042-bc00-fdfafb5bd613" class=""><strong>Blend the images into a mosaic</strong></h3><p id="125506f1-dc68-809b-801a-e5d83c24388c" class="">For every set of pictures, I applied the same procedure, I warped both of the picture to the final canvas.</p><div id="125506f1-dc68-8017-a65c-fb732b2ec2ab" class="column-list"><div id="125506f1-dc68-80bb-9ed8-c1dda6169ed4" style="width:50%" class="column"><figure id="125506f1-dc68-80e7-a87f-e824e451676a" class="image"><a href="image%204.png"><img style="width:331px" src="image%204.png"/></a></figure></div><div id="125506f1-dc68-806f-9ce1-efad8ae4b791" style="width:50%" class="column"><figure id="125506f1-dc68-8020-949f-d0e4e645513c" class="image"><a href="image%205.png"><img style="width:330.9895935058594px" src="image%205.png"/></a></figure></div></div><figure id="125506f1-dc68-80ea-84fc-cf886e3b83b5" class="image"><a href="image%206.png"><img style="width:376px" src="image%206.png"/></a></figure><p id="125506f1-dc68-80f5-870e-c6a2e0a16da2" class="">                                                                            direct blended output</p><p id="125506f1-dc68-80ac-9293-f624e2a1ab73" class="">However, directly blending two images will cause strong edge artifacts, therefore I further explore ways to smoothly combine two images.</p><p id="125506f1-dc68-80e8-b84d-f7c95ea5588f" class="">
+</p><p id="125506f1-dc68-8008-b6d4-e4ccb95a3b88" class="">I employed a method using weighted blending and distance transform. In regions where only one of the images contains pixels, the weight for that image is set to 1. In the overlapping areas, a weighted sum determines the blending of the two images. The degree of blending is decided by the weighted sum of the distances from the pixel to the non-overlapping areas of both images. </p><div id="125506f1-dc68-80ed-8bc2-e54fdacb5343" class="column-list"><div id="125506f1-dc68-8034-b6bb-f718a2454f61" style="width:50%" class="column"><figure id="125506f1-dc68-8045-9cce-c7700b839cf7" class="image"><a href="image%207.png"><img style="width:330.9895935058594px" src="image%207.png"/></a></figure></div><div id="125506f1-dc68-80e8-a7e8-d9de4fe5f115" style="width:50%" class="column"><figure id="125506f1-dc68-8027-ac51-ce7a094cf9a2" class="image"><a href="image%208.png"><img style="width:330.9895935058594px" src="image%208.png"/></a></figure></div></div><p id="125506f1-dc68-8088-b5ef-fe1f2b5c3bc9" class="">And results are shown below.</p><p id="125506f1-dc68-808c-810f-ed92da80bfb5" class="">
+</p><figure id="125506f1-dc68-80f3-abb5-f42da5815e26" class="image"><a href="window.png"><img style="width:707.9896240234375px" src="window.png"/></a></figure><figure id="125506f1-dc68-806d-b5c8-ebeed991e2ad" class="image"><a href="computer.png"><img style="width:707.9896240234375px" src="computer.png"/></a></figure><figure id="125506f1-dc68-8052-aaab-c37559731791" class="image"><a href="dock.png"><img style="width:707.9896240234375px" src="dock.png"/></a></figure><p id="125506f1-dc68-8002-a727-c28c05b74938" class="">
+</p><h2 id="125506f1-dc68-8055-9c13-db9804f28553" class="">PartB  <strong>Automatic Correspondence Detection</strong></h2><p id="125506f1-dc68-8098-b018-e9d6d142cb77" class=""><strong>Corner Detection</strong></p><p id="12e506f1-dc68-80ed-95f9-c746a29b7088" class="">For the first part, we should first detct the potential feature points which can be used for for later alignment. We use Harris corner detection technique to detect the corner point in the picture. Using the sample code given in the spec, we can get the coordinations and strength of the corner points in the picture.</p><div id="12e506f1-dc68-8061-afe8-d17fa5ad4a13" class="column-list"><div id="12e506f1-dc68-8098-8a21-dde6345e0617" style="width:50%" class="column"><figure id="12e506f1-dc68-805e-88cd-e2b612817450" class="image"><a href="image%209.png"><img style="width:330.9895935058594px" src="image%209.png"/></a></figure><p id="12e506f1-dc68-8034-b068-ddfd24e12c48" class="">original image</p></div><div id="12e506f1-dc68-807d-943a-dc11e686f169" style="width:50%" class="column"><figure id="12e506f1-dc68-8073-abfc-ce58096291d5" class="image"><a href="image%2010.png"><img style="width:330.9895935058594px" src="image%2010.png"/></a></figure><p id="12e506f1-dc68-806b-8456-d9bb4251a0c4" class="">corner points</p><p id="12e506f1-dc68-808b-ad5c-caa2db94b2bd" class="">
+</p></div></div><p id="12e506f1-dc68-8020-b902-de4ec761831a" class="">We can clearly see from the picture that the interest points is way too dense to be useful for the image feature matching.</p><h3 id="12e506f1-dc68-800f-9bd7-f47bde51541b" class=""><strong>Adaptive Non-maximal Suppression (ANMS)</strong></h3><p id="12e506f1-dc68-80f3-b6d5-cd8e14dea4df" class="">To futher select interest points, I implements the non-maximal suppression technique described in the paper <a href="https://inst.eecs.berkeley.edu/~cs180/fa24/hw/proj4/Papers/MOPS.pdf">Multi-Image Matching using Multi-Scale Oriented Patches</a>. The goal is to select feature points which are evenly distributed in the entire image and at the same time reduce the number of possible interest points. Specically, it determines the minimum suppression radius r by </p><p id="12e506f1-dc68-806b-abdf-eb3639d54f2f" class=""><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>r</mi><mi>i</mi></msub><mo>=</mo><msub><mrow><mi>min</mi><mo>⁡</mo></mrow><mi>j</mi></msub><mrow><mo fence="true">∣</mo><msub><mi>x</mi><mi>i</mi></msub><mo>−</mo><msub><mi>x</mi><mi>j</mi></msub><mo fence="true">∣</mo></mrow><mo separator="true">,</mo><mspace width="1em"/><mtext>s.t. </mtext><mi>f</mi><mo stretchy="false">(</mo><msub><mi>x</mi><mi>i</mi></msub><mo stretchy="false">)</mo><mo>&lt;</mo><mtext>crobust</mtext><mi>f</mi><mo stretchy="false">(</mo><msub><mi>x</mi><mi>j</mi></msub><mo stretchy="false">)</mo><mo separator="true">,</mo><mspace width="1em"/><msub><mi>x</mi><mi>j</mi></msub><mo>∈</mo><mi>I</mi></mrow><annotation encoding="application/x-tex">r_i = \min_{j} \left| x_i - x_j \right|, \quad \text{s.t. } f(x_i) &lt; \text{crobust} f(x_j), \quad x_j \in I</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.0361em;vertical-align:-0.2861em;"></span><span class="mop"><span class="mop">min</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.05724em;">j</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;">∣</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.05724em;">j</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mclose delimcenter" style="top:0em;">∣</span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mpunct">,</span><span class="mspace" style="margin-right:1em;"></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord text"><span class="mord">s.t. </span></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.0361em;vertical-align:-0.2861em;"></span><span class="mord text"><span class="mord">crobust</span></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.05724em;">j</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mpunct">,</span><span class="mspace" style="margin-right:1em;"></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.05724em;">j</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.07847em;">I</span></span></span></span></span><span>﻿</span></span></p><p id="12e506f1-dc68-801f-89bb-ea8dd54aedc1" class="">and then pick the largest n points to be our new interest points.</p><div id="12e506f1-dc68-8030-99e1-c697e9a3d08b" class="column-list"><div id="12e506f1-dc68-80ec-8836-e1a92e761e76" style="width:50%" class="column"><figure id="12e506f1-dc68-8046-b518-f143491538d3" class="image"><a href="image%209.png"><img style="width:330.9895935058594px" src="image%209.png"/></a></figure><p id="12e506f1-dc68-80b3-be34-e31416ae26fc" class="">original image</p></div><div id="12e506f1-dc68-801e-8022-ce8c3e6a9716" style="width:50%" class="column"><figure id="12e506f1-dc68-8081-b257-c695d0337dca" class="image"><a href="image%2011.png"><img style="width:330.9895935058594px" src="image%2011.png"/></a></figure><p id="12e506f1-dc68-8041-9a7e-f968cae20629" class="">image after <strong>ANMS</strong></p></div></div><p id="12e506f1-dc68-8016-8d93-f14134e70f5c" class="">We now can see that the interest points are much fewer now and they are evenly distributed over the picture.</p><p id="12e506f1-dc68-8039-85c5-e8f7fda7cc8d" class="">
+</p><h3 id="12e506f1-dc68-808e-bd55-f22af1364d65" class=""><strong>Feature Descriptor Extraction</strong></h3><p id="12e506f1-dc68-80c0-88ef-d97f9fb3fe4c" class="">In this part, we can now extract the surrounding patch of the interest points. Each patch is axis-aligned and size of 40 * 40. Then we downsample it into 8 * 8 and apply normalizetion into that the mean is 0 and the standard deviation is 1.</p><div id="12e506f1-dc68-8033-b35c-d9a019b64a83" class="column-list"><div id="12e506f1-dc68-8062-8592-d20af092a083" style="width:50%" class="column"><figure id="12e506f1-dc68-80a2-ade8-f3ee31663f5b" class="image"><a href="image%2012.png"><img style="width:331px" src="image%2012.png"/></a></figure></div><div id="12e506f1-dc68-808b-ad21-e01922909fcd" style="width:50%" class="column"><figure id="12e506f1-dc68-8073-b33a-dc3587c3f957" class="image"><a href="image%2013.png"><img style="width:331px" src="image%2013.png"/></a></figure><p id="12e506f1-dc68-8035-8031-c48483e61696" class="">
+</p></div></div><p id="12e506f1-dc68-8095-ad04-d4b1930182b0" class="">The descriptor now looks like this.</p><h3 id="12e506f1-dc68-801c-92df-c6b8cfe48809" class="">Feature Matching</h3><p id="12e506f1-dc68-80af-9215-cc63e80a0327" class="">In the feature matching part, we want to identify correspondences in the two pictures. And in this part, I use the Lowe’s trick to ensure that the pattern are actually ‘real’ correspondences.</p><p id="12e506f1-dc68-8085-b1a0-ea1d5cf3bd41" class="">the Lowe’s trick is that besides calculating the closest match, we also take the second closest match into considesation. If this ratio <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>r</mi><mi>a</mi><mi>t</mi><mi>i</mi><mi>o</mi><mo>=</mo><mfrac><mrow><mi>d</mi><mn>1</mn></mrow><mrow><mi>d</mi><mn>2</mn></mrow></mfrac></mrow><annotation encoding="application/x-tex">ratio=\frac{d1}{d2}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6595em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="mord mathnormal">a</span><span class="mord mathnormal">t</span><span class="mord mathnormal">i</span><span class="mord mathnormal">o</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.2251em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8801em;"><span style="top:-2.655em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">d</span><span class="mord mtight">2</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">d</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span><span>﻿</span></span> is below a certain threshold, the match is considered good. This can improve matching accuracy.</p><figure id="12e506f1-dc68-800a-8c16-d9847004abd3" class="image"><a href="image%2014.png"><img style="width:707.9896240234375px" src="image%2014.png"/></a></figure><p id="12e506f1-dc68-8044-9c36-d5591669d43e" class="">
+</p><h3 id="12e506f1-dc68-80b6-9ea0-d84e454d3edf" class="">Random sample consensus RANSAC</h3><p id="12e506f1-dc68-8023-9004-ee0107617c3d" class="">Although we use Lowe’s trick to improve matching accuracy, however there’re still likely to have wrong matchings (can be seen in the picture above). Therefore, we use RANSAC to improve the robustness of the homography we compute.</p><p id="12e506f1-dc68-80bc-b506-c0b3939bf6f7" class="">The step are as follows: in every loop, we randomly choose four pairs of features, and then compute the homography, then we calculate the number of inliers, inliners are defined as <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext>dist</mtext><mo stretchy="false">(</mo><msup><mi>π</mi><mo mathvariant="normal" lspace="0em" rspace="0em">′</mo></msup><mo separator="true">,</mo><mi>H</mi><mi>π</mi><mo stretchy="false">)</mo><mo>&lt;</mo><mi>ε</mi></mrow><annotation encoding="application/x-tex">\text{dist}(\pi&#x27;, H \pi) &lt; \varepsilon</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0019em;vertical-align:-0.25em;"></span><span class="mord text"><span class="mord">dist</span></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">π</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.7519em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">′</span></span></span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.08125em;">H</span><span class="mord mathnormal" style="margin-right:0.03588em;">π</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">ε</span></span></span></span></span><span>﻿</span></span>and we keep the Keep largest set of inliers, and at the end, we re-compute least-squares H estimate on all of the inliers.</p><p id="12e506f1-dc68-8094-9ca0-f24a2885a8f7" class="">After we get the homography, the following steps are similar to the first part.</p><figure id="12e506f1-dc68-8014-803b-c3cf8fd9374e" class="image"><a href="image%2015.png"><img style="width:274px" src="image%2015.png"/></a></figure><p id="12e506f1-dc68-80e8-815b-e0d604b62bd3" class="">warped image using the homography computed by RANSAC</p><div id="12e506f1-dc68-809b-85a8-fcf9bf96a63d" class="column-list"><div id="12e506f1-dc68-8041-9bb2-f8b112e77599" style="width:50%" class="column"><figure id="12e506f1-dc68-8005-a777-cce44e0268fb" class="image"><a href="image%2016.png"><img style="width:707.9896240234375px" src="image%2016.png"/></a></figure><p id="12e506f1-dc68-8070-ace3-e8aba3fd41ba" class="">part a warped result</p></div><div id="12e506f1-dc68-8041-b04e-d44736aa5b38" style="width:50%" class="column"><figure id="12e506f1-dc68-80d6-b8c4-eba66e7a5dc9" class="image"><a href="image%2015.png"><img style="width:336px" src="image%2015.png"/></a></figure><p id="12e506f1-dc68-80cc-bef1-dc7679c1b75f" class="">part b warped result</p></div></div><p id="12e506f1-dc68-806d-a51e-c27b63629ffa" class="">and it is similar to the warped result in part a, which correspondences were manually chosen.</p><div id="12f506f1-dc68-805a-8e80-d45728898eb6" class="column-list"><div id="12f506f1-dc68-8046-8ec9-d3cdf59a4c6c" style="width:50%" class="column"><figure id="12e506f1-dc68-809a-bc74-eca39fa10cd6" class="image"><a href="warped.png"><img style="width:384px" src="warped.png"/></a></figure><p id="12f506f1-dc68-80eb-91a6-dfb234cc2cb9" class="">final result</p></div><div id="12f506f1-dc68-8008-bf67-fa2fcde2faed" style="width:50%" class="column"><figure id="12f506f1-dc68-8014-b223-e508f3de4338" class="image"><a href="image%2017.png"><img style="width:330.9895935058594px" src="image%2017.png"/></a></figure><p id="12f506f1-dc68-8086-8e1e-c89cbc50ea41" class="">result in part a</p></div></div><p id="12f506f1-dc68-80a7-8b33-d3f6350ed267" class="">I can hardly tell the difference, all I can say is that the angle of the black edge on the far right of the picture is a little different</p><h3 id="12e506f1-dc68-80b8-a1da-d0e08f20f79a" class="">More Results</h3><h3 id="12e506f1-dc68-8012-a083-ca68c2af696f" class="">desktop</h3><div id="12f506f1-dc68-80c4-96e6-ea49d012da26" class="column-list"><div id="12f506f1-dc68-8072-aa54-f9a67da5b78f" style="width:50%" class="column"><figure id="12f506f1-dc68-8039-b01a-c5359312e82a" class="image"><a href="image%2018.png"><img style="width:330.9895935058594px" src="image%2018.png"/></a></figure></div><div id="12f506f1-dc68-8012-9107-f1aaf9aa496f" style="width:50%" class="column"><figure id="12f506f1-dc68-8044-a6ab-dee2fca5d539" class="image"><a href="image%2019.png"><img style="width:330.9895935058594px" src="image%2019.png"/></a></figure></div></div><figure id="12f506f1-dc68-8098-9062-c81ce499bf33" class="image"><a href="image%2020.png"><img style="width:707.9896240234375px" src="image%2020.png"/></a></figure><div id="12f506f1-dc68-80c9-b11e-c4a450513a8c" class="column-list"><div id="12f506f1-dc68-806f-958b-cd640a24379f" style="width:50%" class="column"><figure id="12f506f1-dc68-8031-b8d9-f00a4ea966b7" class="image"><a href="warped%201.png"><img style="width:707.9896240234375px" src="warped%201.png"/></a></figure><p id="12f506f1-dc68-805a-9fb8-caec70c34f83" class="">final result</p><p id="12f506f1-dc68-80d7-a27e-f60976be2df3" class="">
+</p></div><div id="12f506f1-dc68-8031-bc3c-df81ab50562e" style="width:50%" class="column"><figure id="12f506f1-dc68-804c-a850-feaf45354615" class="image"><a href="image%2021.png"><img style="width:330.9895935058594px" src="image%2021.png"/></a></figure><p id="12f506f1-dc68-80dc-ac30-ed5e96b009b9" class="">result in part a</p><p id="12f506f1-dc68-8037-9a76-e7fac1915c01" class="">
+</p></div></div><h3 id="12f506f1-dc68-80c4-bb76-f49318e4ce54" class="">dock</h3><div id="12f506f1-dc68-805c-9c42-ffd6652d240f" class="column-list"><div id="12f506f1-dc68-80cd-baca-f197f3cd2b64" style="width:50%" class="column"><figure id="12f506f1-dc68-807b-b583-cdd051bd985e" class="image"><a href="image%2022.png"><img style="width:330.9895935058594px" src="image%2022.png"/></a></figure></div><div id="12f506f1-dc68-803a-b7c0-fdb2337c4cbb" style="width:50%" class="column"><figure id="12f506f1-dc68-8065-a362-d163ce81e73b" class="image"><a href="image%2023.png"><img style="width:330.9895935058594px" src="image%2023.png"/></a></figure></div></div><figure id="12f506f1-dc68-800f-809e-cb2431afd3b3" class="image"><a href="image%2024.png"><img style="width:707.9896240234375px" src="image%2024.png"/></a></figure><div id="12f506f1-dc68-8084-bd42-c3468df86bdc" class="column-list"><div id="12f506f1-dc68-8097-adce-db3e943684cd" style="width:50%" class="column"><figure id="12f506f1-dc68-8022-9e7f-e1b9d241f6af" class="image"><a href="warped%202.png"><img style="width:707.9896240234375px" src="warped%202.png"/></a></figure><p id="12f506f1-dc68-804b-81fb-c6b746a7aa23" class="">final result</p></div><div id="12f506f1-dc68-8000-a611-d5dd1a7f5238" style="width:50%" class="column"><figure id="12f506f1-dc68-8003-a6b1-d13507e167c1" class="image"><a href="image%2025.png"><img style="width:330.9895935058594px" src="image%2025.png"/></a></figure><p id="12f506f1-dc68-8076-9ad1-febe87a5ca22" class="">result in part a</p></div></div><p id="12f506f1-dc68-8076-8ff2-f274393d7768" class="">I think these two examples show that the effect of this automatic program is completely comparable to the effect of carefully selecting a lot of corresponding points in part a.</p><h2 id="12f506f1-dc68-804d-a4dc-f30df35217c6" class=""><strong>What have you learned?</strong></h2><p id="12f506f1-dc68-8067-b8ea-ca1178ec14af" class="">I think this project is very cool. The most impressive part is that now we can confidently give the task to computer to stitch the images, even with this basic approach, automatic stitching achieve impressive results, I can hardly tell the differences between the automatic version with the the manual version. So the machine has reached this level in this part, and I believe it can do much more cool things now and in future.</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

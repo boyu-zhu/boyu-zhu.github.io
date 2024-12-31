@@ -1,0 +1,692 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Project 3: Face Morphing</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+    margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-default_background {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.highlight-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.block-color-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-uiBlue { background-color: rgba(35, 131, 226, .07); }
+.select-value-color-pink { background-color: rgba(245, 224, 233, 1); }
+.select-value-color-purple { background-color: rgba(232, 222, 238, 1); }
+.select-value-color-green { background-color: rgba(219, 237, 219, 1); }
+.select-value-color-gray { background-color: rgba(227, 226, 224, 1); }
+.select-value-color-transparentGray { background-color: rgba(227, 226, 224, 0); }
+.select-value-color-translucentGray { background-color: rgba(0, 0, 0, 0.06); }
+.select-value-color-orange { background-color: rgba(250, 222, 201, 1); }
+.select-value-color-brown { background-color: rgba(238, 224, 218, 1); }
+.select-value-color-red { background-color: rgba(255, 226, 221, 1); }
+.select-value-color-yellow { background-color: rgba(253, 236, 200, 1); }
+.select-value-color-blue { background-color: rgba(211, 229, 239, 1); }
+.select-value-color-pageGlass { background-color: undefined; }
+.select-value-color-washGlass { background-color: undefined; }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="115506f1-dc68-8072-8c88-c77850c5bad7" class="page sans"><header><img class="page-cover-image" src="image004.gif" style="object-position:center 68.82%"/><h1 class="page-title">Project 3: <strong>Face Morphing</strong></h1><p class="page-description"></p></header><div class="page-body"><p id="115506f1-dc68-80e8-befc-f08f41d60c96" class="">-Boyu Zhu</p><h2 id="116506f1-dc68-80ca-82c0-f5aa3eb4f6f2" class=""><strong>Part 1. Defining Correspondences</strong></h2><p id="116506f1-dc68-8061-8a83-f53f88d19af2" class="">For this part, I used the online labeling tool given in the project spec to define the correspondences on the two images I’d like to morph. I manully add four corner points for better morphing.</p><div id="116506f1-dc68-8073-917b-f3bfd511392f" class="column-list"><div id="116506f1-dc68-80a0-938b-dadd9336fe26" style="width:50%" class="column"><figure id="116506f1-dc68-80c0-a9f6-c9f9a5f8bddd" class="image"><a href="zby.jpg"><img style="width:601.9886474609375px" src="zby.jpg"/></a></figure><p id="116506f1-dc68-80bc-8ac8-f43bc8e58d7f" class="">me</p></div><div id="116506f1-dc68-8040-b716-f3d5d64b3351" style="width:50%" class="column"><figure id="116506f1-dc68-80de-a8db-e48c5093078c" class="image"><a href="george_small.jpg"><img style="width:330.98486328125px" src="george_small.jpg"/></a></figure><p id="116506f1-dc68-805e-8236-f13e5b6392f2" class="">George</p><p id="116506f1-dc68-808a-b1e8-d76833d5c4d4" class="">
+</p></div></div><p id="116506f1-dc68-807c-a79c-c6c8e14edf32" class="">Then I used these corrspondences points to calculate Delaunay triangulations of both images</p><p id="116506f1-dc68-80ba-bbc5-fc83d4bbb941" class="">                                                                          Delaunay triangulation</p><div id="116506f1-dc68-8051-9403-c41eac55a317" class="column-list"><div id="116506f1-dc68-805f-bb2f-d3700c1fc121" style="width:50%" class="column"><figure id="116506f1-dc68-8019-b9c8-e3c8d2864f90" class="image"><a href="image.png"><img style="width:513.9867553710938px" src="image.png"/></a></figure></div><div id="116506f1-dc68-8070-8854-e284a990c046" style="width:50%" class="column"><figure id="116506f1-dc68-80e7-83e8-eca20e150d63" class="image"><a href="image%201.png"><img style="width:330.98486328125px" src="image%201.png"/></a></figure></div></div><h2 id="116506f1-dc68-809f-8c4b-c8e00b7f8b4c" class=""><strong>Part 2. Computing the &quot;Mid-way Face&quot;</strong></h2><p id="118506f1-dc68-8084-bc56-c393fc64df21" class="">For this part, I first implemented the function to compute the affine matrix based on the coordinates of the three points in the simplice from the triangulation. Using the affine matrix, I can now map the all the points in the simplice back to the source image and destination image. Then, I chose to use the  Bilinear Interpolation to calculate the color of the halfway image. And finally I averaged the color of the two midway images to obtain the final halfway image.</p><figure id="116506f1-dc68-80f3-a70d-faae657d90f1" class="image"><a href="image%202.png"><img style="width:707.9829711914062px" src="image%202.png"/></a></figure><h2 id="116506f1-dc68-80a7-8a98-de145e7d1552" class=""><strong>Part 3. The Morph Sequence</strong></h2><p id="118506f1-dc68-80bd-abeb-cac3b5e9f2bc" class="">Combining the mid-way face of every step into a gif, we can get this morph sequence.</p><figure id="116506f1-dc68-807a-9ff8-e5783b09d15c" class="image"><a href="output1.gif"><img style="width:601.9886474609375px" src="output1.gif"/></a></figure><h2 id="116506f1-dc68-80a8-918c-e1c27456a423" class=""><strong>Part 4. The &quot;Mean face&quot; of a population</strong></h2><p id="118506f1-dc68-80e0-b962-dcd973f6980d" class="">In this part, I used the dataset of FEI face database. The FEI face database is a Brazilian face database that contains a set of face images taken between June 2005 and March 2006 at the Artificial Intelligence Laboratory of FEI in São Bernardo do Campo, São Paulo, Brazil. </p><p id="118506f1-dc68-8049-afc9-de80cf9b43db" class="">The dataset has two subsets: neutral faces and smiling faces.</p><p id="118506f1-dc68-80f3-b9cb-ec86f5fb4d48" class="">The dataset give an annotation of each image with 46 correspondences. I used these  correspondences and four corner points I manully add to compute the average simplices and average shape. </p><figure id="116506f1-dc68-8057-aa3a-e61196719435" class="image"><a href="image%203.png"><img style="width:532.9829711914062px" src="image%203.png"/></a></figure><p id="118506f1-dc68-80e2-9207-e2f7b3a7244e" class="">After computing the average shape, I warped every image into the average shape. Below are some comparison between original image and warped image.</p><div id="116506f1-dc68-8010-9d8b-d06a55efb957" class="column-list"><div id="116506f1-dc68-805d-b140-c6129ceefe8f" style="width:50%" class="column"><figure id="116506f1-dc68-8062-8a90-ce010f5bbd0b" class="image"><a href="image%204.png"><img style="width:707.9735107421875px" src="image%204.png"/></a></figure></div><div id="116506f1-dc68-80e5-b42a-ef980956f826" style="width:50%" class="column"><figure id="116506f1-dc68-80fd-ba83-c9bd53481cdd" class="image"><a href="image%205.png"><img style="width:707.9735107421875px" src="image%205.png"/></a></figure></div></div><div id="116506f1-dc68-8057-a389-f3093f2fce29" class="column-list"><div id="116506f1-dc68-80a7-b4d7-e18301f38733" style="width:50%" class="column"><figure id="116506f1-dc68-800d-a5c9-fa6f4b001219" class="image"><a href="image%206.png"><img style="width:707.9735107421875px" src="image%206.png"/></a></figure></div><div id="116506f1-dc68-80f8-b93e-e8221b149b92" style="width:50%" class="column"><figure id="116506f1-dc68-80b1-98fd-e96cca1a6b9b" class="image"><a href="image%207.png"><img style="width:707.9735107421875px" src="image%207.png"/></a></figure></div></div><div id="116506f1-dc68-80cf-a3f9-d8e6daedf0ac" class="column-list"><div id="116506f1-dc68-80a9-b3f8-dff407e16854" style="width:50%" class="column"><figure id="116506f1-dc68-8098-b738-ef589655744d" class="image"><a href="image%208.png"><img style="width:707.9735107421875px" src="image%208.png"/></a></figure></div><div id="116506f1-dc68-80d5-b76d-e6bcb3b586db" style="width:50%" class="column"><figure id="116506f1-dc68-8048-87ff-f55f11295186" class="image"><a href="image%209.png"><img style="width:707.9735107421875px" src="image%209.png"/></a></figure></div></div><div id="116506f1-dc68-8048-83ed-cafcbfe5fd51" class="column-list"><div id="116506f1-dc68-80e5-9339-e13aca87c4d0" style="width:50%" class="column"><figure id="116506f1-dc68-8078-bfd3-f8fd47be0ce5" class="image"><a href="image%2010.png"><img style="width:707.9735107421875px" src="image%2010.png"/></a></figure></div><div id="116506f1-dc68-8011-9819-da956f7b3f8e" style="width:50%" class="column"><figure id="116506f1-dc68-807d-b099-eda97136006b" class="image"><a href="image%2011.png"><img style="width:330.98486328125px" src="image%2011.png"/></a></figure></div></div><p id="116506f1-dc68-8058-ae50-ca0d06528954" class="">Aftering comuting all of the warped image, I averaged all of the images in the respective subset to compute the average faces.</p><div id="116506f1-dc68-8027-a814-f92c4a6a8a45" class="column-list"><div id="116506f1-dc68-80b1-92f6-de65f153d545" style="width:50%" class="column"><figure id="116506f1-dc68-8089-80db-dbc43308aa0d" class="image"><a href="image%2012.png"><img style="width:296.65625px" src="image%2012.png"/></a></figure><p id="118506f1-dc68-808c-be1b-e3c6dd7ade59" class="">average image of neural faces</p></div><div id="116506f1-dc68-80e3-ba8a-fbbbf20f0436" style="width:50%" class="column"><figure id="116506f1-dc68-803a-a37e-ce151f857363" class="image"><a href="image%2013.png"><img style="width:296.65625px" src="image%2013.png"/></a></figure><p id="118506f1-dc68-80b4-b8f6-f1a330ea65c0" class="">average image of smiling faces</p></div></div><p id="118506f1-dc68-809e-a0d7-d586f86476df" class="">I then warped my face to the average image of neural faces, and warped the average image of neural faces to my face</p><div id="116506f1-dc68-80d3-b990-f18725609d89" class="column-list"><div id="116506f1-dc68-8003-adb7-c0df145b762b" style="width:50%" class="column"><figure id="116506f1-dc68-807b-9f24-c0cc214bb4c8" class="image"><a href="image%2014.png"><img style="width:296.65625px" src="image%2014.png"/></a></figure><p id="118506f1-dc68-80cd-93d8-c02a8fda5b0e" class="">my face warped to the average image of neural faces</p></div><div id="116506f1-dc68-8028-b8c8-f564c66e9f91" style="width:50%" class="column"><figure id="116506f1-dc68-8060-942a-e335dede250e" class="image"><a href="image%2015.png"><img style="width:296.65625px" src="image%2015.png"/></a></figure><p id="118506f1-dc68-8011-a221-f9748d6a870d" class="">the average image of neural faces warped to my face</p><p id="118506f1-dc68-806a-af4b-cd426369c327" class="">
+</p></div></div><h2 id="116506f1-dc68-80d3-aea9-c78f4f4ed79b" class=""><strong>Part 5. Caricatures: Extrapolating from the mean</strong></h2><p id="118506f1-dc68-80be-a5e7-c362a37749d6" class="">To create caricatures, I change the value of α outside the normal range of [0, 1] to exaggerate features of my face to the average face&#x27;s features or exaggerate the average face&#x27;s features to my face.</p><div id="116506f1-dc68-8010-81fe-ef772cfd0836" class="column-list"><div id="116506f1-dc68-80c6-b8b4-e4345f43e234" style="width:25%" class="column"><figure id="116506f1-dc68-80db-81f0-ecb9b7348f3f" class="image"><a href="image%2016.png"><img style="width:205.3125px" src="image%2016.png"/></a></figure><p id="118506f1-dc68-806c-9ac4-e8a6aa2f79c3" class="">α = 2</p></div><div id="116506f1-dc68-8037-aa24-c3b41474adf2" style="width:25%" class="column"><figure id="116506f1-dc68-8066-b7a9-c0777e27a57b" class="image"><a href="image%2017.png"><img style="width:205.3125px" src="image%2017.png"/></a></figure><p id="118506f1-dc68-8039-99f8-da3a92e19979" class="">α = 1.5</p></div><div id="116506f1-dc68-80fc-9bb7-f49d76928ba4" style="width:25%" class="column"><figure id="116506f1-dc68-809e-9e0f-ff733597ab3f" class="image"><a href="image%2018.png"><img style="width:205.3125px" src="image%2018.png"/></a></figure><p id="118506f1-dc68-806d-8015-c916a285d9b0" class="">α = -0.5</p></div><div id="116506f1-dc68-807e-b223-ee0e3e9c4ea1" style="width:25%" class="column"><figure id="116506f1-dc68-80b4-9e15-fe4a97f280fd" class="image"><a href="image%2019.png"><img style="width:142.48959350585938px" src="image%2019.png"/></a></figure><p id="118506f1-dc68-80cd-854a-d50eb0720a00" class="">α = -1</p></div></div><p id="116506f1-dc68-800a-bf55-d6db42a17bed" class="">
+</p><h2 id="116506f1-dc68-803e-8918-fd2482b2405b" class=""><strong>Bells and Whistles</strong></h2><h3 id="116506f1-dc68-80ad-a80d-dc46c360b371" class="">1 Finding Correspondences Automatically</h3><p id="118506f1-dc68-80e7-be87-e95a21795e07" class="">To comlete bells and whistles, the first thing I tried to do is to look for a way of labeling automatically, but I found it exhausting to label manually. Therefore, I used the dlib to automatically compute the 68 important feature points on the face of the image. I don’t need to manually click on the points and can explore more interesting experiments.</p><figure id="116506f1-dc68-80d7-bf1a-f4702d3121b5" class="image"><a href="image%2020.png"><img style="width:390px" src="image%2020.png"/></a></figure><h3 id="116506f1-dc68-806f-a2db-e6c6a2a8b3af" class="">2 Change gender</h3><p id="118506f1-dc68-8037-b569-f5e0718a1f90" class="">I changed my gender using the average Chinese famale searched online.</p><p id="118506f1-dc68-806d-a286-f4410b637a5a" class="">I tried with three kinds of morphing: </p><ol type="1" id="118506f1-dc68-8072-baff-fa85077d4b8d" class="numbered-list" start="1"><li>shape only: I only morphed my face to the shape of average Chinese famale.</li></ol><ol type="1" id="118506f1-dc68-8078-b2f2-cd15b25a6898" class="numbered-list" start="2"><li>appearance only: only morphing the appearance of the average Chinese famale to my face shape.</li></ol><ol type="1" id="118506f1-dc68-8088-a4fc-e5443eea99e5" class="numbered-list" start="3"><li>shape &amp; appearance: I morphed  my face to the shape of average Chinese famale and then combine the morphed face with the appearance of average Chinese famale.</li></ol><p id="118506f1-dc68-80ee-8329-f552e5bb681d" class="">shape &amp; appearance morphing achieved the best result.</p><div id="118506f1-dc68-800a-b8f1-cece61323634" class="column-list"><div id="118506f1-dc68-80ce-bb99-f1c209352f4d" style="width:50%" class="column"><figure id="118506f1-dc68-8075-8354-e75eafa9719d" class="image"><a href="man.jpg"><img style="width:330.9895935058594px" src="man.jpg"/></a></figure><p id="118506f1-dc68-80dc-a2d4-c27bb98595e0" class="">me without glasses</p></div><div id="118506f1-dc68-8020-be3e-da4a368d416f" style="width:50%" class="column"><figure id="118506f1-dc68-8088-a1f3-c24498db68ff" class="image"><a href="woman.jpg"><img style="width:330.9895935058594px" src="woman.jpg"/></a></figure><p id="118506f1-dc68-80c3-b42b-c477a4743d8a" class="">average Chinese famale</p><p id="118506f1-dc68-804f-877e-c1846839e3f1" class="">
+</p></div></div><div id="116506f1-dc68-80a6-9e6e-c74f070a1bd5" class="column-list"><div id="116506f1-dc68-8078-9b43-fdf5cfd0aff8" style="width:33.33333333333333%" class="column"><figure id="116506f1-dc68-80bf-8784-c9910e54a321" class="image"><a href="image%2021.png"><img style="width:205.3125px" src="image%2021.png"/></a></figure><p id="118506f1-dc68-8007-8efe-e97af762c4d5" class=""><em>shape only</em></p><p id="118506f1-dc68-808c-8d5b-d5987989cc3a" class="">
+</p></div><div id="116506f1-dc68-80b0-a40c-e7b9b13a2704" style="width:33.33333333333334%" class="column"><figure id="116506f1-dc68-8003-a476-ebf43ca13768" class="image"><a href="image%2022.png"><img style="width:205.3125px" src="image%2022.png"/></a></figure><p id="118506f1-dc68-808c-8372-c04fd5925a03" class=""><em>appearance only</em></p></div><div id="116506f1-dc68-80b5-8102-f856819c04cf" style="width:33.33333333333333%" class="column"><figure id="116506f1-dc68-8056-98d6-ed847f2a0b99" class="image"><a href="image%2023.png"><img style="width:205.3125px" src="image%2023.png"/></a></figure><p id="118506f1-dc68-803d-be64-d9a85ae9c955" class=""><em>shape &amp; appearance</em></p></div></div><h3 id="116506f1-dc68-8010-a4b1-c692c00ff1db" class="">3 PCA basis</h3><p id="118506f1-dc68-805e-9c0f-eb47004aaee9" class="">I computed the PCA basis on neutral and smiling datasets. Here are top 25 Eigenfaces for each of the subset.</p><p id="118506f1-dc68-80a6-a9b5-e19028854afb" class="">
+</p><figure id="116506f1-dc68-80d5-8bdd-dc31842146c6" class="image"><a href="image%2024.png"><img style="width:707.9896240234375px" src="image%2024.png"/></a></figure><figure id="116506f1-dc68-80b0-bd29-d7daa5058b8a" class="image"><a href="image%2025.png"><img style="width:707.9896240234375px" src="image%2025.png"/></a></figure><p id="118506f1-dc68-8057-995b-fc96182e3494" class="">Then I used the Eigenfaces to reconstruct the original faces. Here are two examples.</p><p id="118506f1-dc68-805b-ab78-c0d60b304b30" class="">From the result, we can see that the reconstructed image is blurrier and less detailed compared to the original one. But it still retains the overall structure and facial features.</p><figure id="116506f1-dc68-8090-a7e4-ff060af655af" class="image"><a href="image%2026.png"><img style="width:707.9896240234375px" src="image%2026.png"/></a></figure><figure id="116506f1-dc68-8054-968f-ed521f493922" class="image"><a href="image%2027.png"><img style="width:707.9896240234375px" src="image%2027.png"/></a></figure><p id="116506f1-dc68-8029-a2b9-c9dba9475be1" class="">
+</p><h3 id="116506f1-dc68-8065-9563-f79f82eeda2f" class="">4 morphing music video</h3><p id="118506f1-dc68-805c-9bff-cb48d0e6e539" class="">I created a music video of my friend Sunny at different ages. The output is shown below.</p><p id="118506f1-dc68-8050-95c4-e5b9670f456b" class="">
+</p><figure id="116506f1-dc68-805c-b2ee-df8e2db4f15e"><div class="source"><a href="https://www.youtube.com/shorts/LhGZwAYhUpU">https://www.youtube.com/shorts/LhGZwAYhUpU</a></div></figure></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
