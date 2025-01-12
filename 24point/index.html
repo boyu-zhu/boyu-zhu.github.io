@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>24点游戏</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>24点游戏</h1>
+        <p>点击按钮生成四个数字，这四个数字可以组合成 24。</p>
+
+        <div class="inputs">
+            <p>数字1: <span id="num1"></span></p>
+            <p>数字2: <span id="num2"></span></p>
+            <p>数字3: <span id="num3"></span></p>
+            <p>数字4: <span id="num4"></span></p>
+        </div>
+
+        <button onclick="generateNumbers()">生成四个数字并检查</button>
+
+        <p id="result"></p>
+        <div id="steps"></div> <!-- 用来显示运算过程 -->
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
