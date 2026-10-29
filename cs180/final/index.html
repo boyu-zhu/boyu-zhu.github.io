@@ -1,0 +1,710 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Final Project</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+    margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-default_background {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.highlight-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.block-color-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-uiBlue { background-color: rgba(35, 131, 226, .07); }
+.select-value-color-pink { background-color: rgba(245, 224, 233, 1); }
+.select-value-color-purple { background-color: rgba(232, 222, 238, 1); }
+.select-value-color-green { background-color: rgba(219, 237, 219, 1); }
+.select-value-color-gray { background-color: rgba(227, 226, 224, 1); }
+.select-value-color-transparentGray { background-color: rgba(227, 226, 224, 0); }
+.select-value-color-translucentGray { background-color: rgba(0, 0, 0, 0.06); }
+.select-value-color-orange { background-color: rgba(250, 222, 201, 1); }
+.select-value-color-brown { background-color: rgba(238, 224, 218, 1); }
+.select-value-color-red { background-color: rgba(255, 226, 221, 1); }
+.select-value-color-yellow { background-color: rgba(253, 236, 200, 1); }
+.select-value-color-blue { background-color: rgba(211, 229, 239, 1); }
+.select-value-color-pageGlass { background-color: undefined; }
+.select-value-color-washGlass { background-color: undefined; }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="15a506f1-dc68-8037-b28a-f3c12d5379d1" class="page sans"><header><h1 class="page-title">Final Project</h1><p class="page-description"></p></header><div class="page-body"><p id="15b506f1-dc68-80d8-9542-d1c6547a5fa6" class="">-Boyu Zhu</p><h1 id="15b506f1-dc68-8049-b36d-c633136f7d25" class=""><strong>Proj1: High Dynamic Range</strong></h1><h2 id="15a506f1-dc68-8057-9067-cdd875b22b7f" class="">Background</h2><p id="15a506f1-dc68-80dc-8198-cff071775797" class="">Modern cameras are unable to capture the full dynamic range of commonly encountered real-world scenes. In some scenes, even the best possible photograph will be partially under or over-exposed. Researchers and photographers commonly get around this limitation by combining information from multiple exposures of the same scene.</p><p id="15a506f1-dc68-805b-a1c2-eb468ce1c839" class="">
+</p><h2 id="15a506f1-dc68-80d4-b7ee-ca69387980e5" class=""><strong>Radiance map construction</strong></h2><p id="15b506f1-dc68-805d-b774-ed410976b742" class="">We want to recovering a radiance map from a collection of images. So we want to find the funcion g and therefore to get the log radiance values for each pixel. Based on the equation below, we can <br/>use the function g and the known exposure durations in the above equation to generate an average radiance image from the set of input images. Again use a weighted average that gives more weight to pixels in the middle of the captured image range.<br/></p><figure id="15b506f1-dc68-8022-8679-ee49262c6d30" class="image"><a href="image.png"><img style="width:707.789306640625px" src="image.png"/></a></figure><p id="15b506f1-dc68-802d-a35f-fcbab3ee3171" class="">
+</p><p id="15b506f1-dc68-8007-bf99-eaefb75aa9b1" class="">First, I use the arch image</p><div id="15b506f1-dc68-8003-a431-d797bf5f42e5" class="column-list"><div id="15b506f1-dc68-80a1-b46f-e562cee3d06e" style="width:50%" class="column"><figure id="15b506f1-dc68-80d2-be59-efd75fa4bcc3" class="image"><a href="1_4.jpg"><img style="width:707.986083984375px" src="1_4.jpg"/></a></figure></div><div id="15b506f1-dc68-8009-b858-ffbf2461bf86" style="width:50%" class="column"><figure id="15b506f1-dc68-8078-8176-dda13d55c73e" class="image"><a href="1_25.jpg"><img style="width:707.986083984375px" src="1_25.jpg"/></a></figure></div></div><div id="15b506f1-dc68-8051-b78a-ce12730117fd" class="column-list"><div id="15b506f1-dc68-80a1-b1ee-d3a03a997c68" style="width:50%" class="column"><figure id="15b506f1-dc68-8018-b448-d303430394eb" class="image"><a href="3_1.jpg"><img style="width:707.986083984375px" src="3_1.jpg"/></a></figure></div><div id="15b506f1-dc68-8025-98b7-f81f907d9f89" style="width:50%" class="column"><figure id="15b506f1-dc68-80e0-b276-eac6d3993e16" class="image"><a href="17_1.jpg"><img style="width:707.986083984375px" src="17_1.jpg"/></a></figure></div></div><p id="15b506f1-dc68-80fb-90e4-d620100d2068" class="">Here is the functions approximate for the arch image</p><figure id="15b506f1-dc68-80d3-81fd-fff097914a99" class="image"><a href="Figure_1.png"><img style="width:707.986083984375px" src="Figure_1.png"/></a></figure><p id="15b506f1-dc68-80fb-bfb8-e6284d9d5fdb" class="">The radiance map of the image</p><figure id="15b506f1-dc68-80e4-b5bd-e6b301b92b66" class="image"><a href="Figure_1%201.png"><img style="width:707.9744873046875px" src="Figure_1%201.png"/></a></figure><p id="15b506f1-dc68-800e-b744-e762881caaba" class="">
+</p><p id="15b506f1-dc68-8072-af98-cbaf1a175fee" class="">
+</p><h2 id="15b506f1-dc68-80fb-bfd3-c79344a09779" class=""><strong>Tone mapping</strong></h2><p id="15b506f1-dc68-8022-b2fa-f948277615b0" class="">However, only getting the radiance map is far from enough. We apply tone mapping to stretch the intensity values in the resulting image to fill the [0 255] range for maximum contrast.</p><p id="15b506f1-dc68-80b4-b8be-c5d601a3a509" class="">In this part, we apply three kinds of tone mapping techniques.</p><ul id="15b506f1-dc68-8090-941f-ee7954bec6fd" class="bulleted-list"><li style="list-style-type:disc"><strong>Global scaling: clip the data between 0 and 1</strong></li></ul><ul id="15b506f1-dc68-8036-a7a7-d8d54f056d1d" class="bulleted-list"><li style="list-style-type:disc"><strong>Global simple: </strong><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>E</mi><mi>i</mi><mo mathvariant="normal" lspace="0em" rspace="0em">′</mo></msubsup><mo>=</mo><mfrac><msub><mi>E</mi><mi>i</mi></msub><mrow><mn>1</mn><mo>+</mo><msub><mi>E</mi><mi>i</mi></msub></mrow></mfrac></mrow><annotation encoding="application/x-tex">E&#x27;_i = \frac{E_i}{1+E_i}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0106em;vertical-align:-0.2587em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.7519em;"><span style="top:-2.4413em;margin-left:-0.0576em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">′</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2587em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.3335em;vertical-align:-0.4451em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8884em;"><span style="top:-2.655em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span><span class="mbin mtight">+</span><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.05764em;">E</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3281em;"><span style="top:-2.357em;margin-left:-0.0576em;margin-right:0.0714em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.143em;"><span></span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.4101em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.05764em;">E</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3281em;"><span style="top:-2.357em;margin-left:-0.0576em;margin-right:0.0714em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.143em;"><span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.4451em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span><span>﻿</span></span><strong>, based on  the equation, to map the pixel to 0 and 1</strong></li></ul><ul id="15b506f1-dc68-802c-abd9-e520e9fb83fb" class="bulleted-list"><li style="list-style-type:disc"><strong>Durand: (the following steps are from project spec)</strong></li></ul><p id="15b506f1-dc68-8067-9e3e-e42212a03e0b" class="">1 Your input is linear RGB values of radiance.</p><p id="15b506f1-dc68-804c-abb2-f489df5fbadb" class="">2 Compute the intensity (I) using a luminance function (such as MATLAB&#x27;s rgb2gray)</p><p id="15b506f1-dc68-8013-abb8-df8ae3807358" class="">3 Compute the chrominance channels: (R/I, G/I, B/I)</p><p id="15b506f1-dc68-808b-b84d-cf9e79a6d27d" class="">4 Compute the log intensity: L = log2(I)</p><p id="15b506f1-dc68-8043-b308-f6bc1acae04b" class="">5 Filter that with a bilateral filter: B = bf(L)</p><p id="15b506f1-dc68-8034-8ef4-d95b45e9661a" class="">6 Compute the detail layer: D = L - B</p><p id="15b506f1-dc68-80f2-a741-c358cd351692" class="">7 Apply an offset and a scale to the base: B&#x27; = (B - o) * s<div class="indented"><ul id="15b506f1-dc68-8070-a250-d8f2808ed457" class="bulleted-list"><li style="list-style-type:disc">The offset is such that the maximum intensity of the base is 1. Since the values are in the log domain, o = max(B).</li></ul><ul id="15b506f1-dc68-808c-8bad-dbe6d6d5824d" class="bulleted-list"><li style="list-style-type:disc">The scale is set so that the output base has dR stops of dynamic range, i.e., s = dR / (max(B) - min(B)). Try values between 2 and 8 for dR, that should cover an interesting range. Values around 4 or 5 should look fine.</li></ul></div></p><p id="15b506f1-dc68-80de-b6a0-fe2d2a14326e" class="">8 Reconstruct the log intensity: O = 2^(B&#x27; + D)</p><p id="15b506f1-dc68-80b7-9c68-ef1c36405bb8" class="">9 Put back the colors: R&#x27;,G&#x27;,B&#x27; = O * (R/I, G/I, B/I)</p><p id="15b506f1-dc68-8007-989d-cc8162885321" class="">10 Apply gamma compression. Without gamma compression the result will look too dark. Values around 0.5 should look fine (e.g. result.^0.5)</p><p id="15c506f1-dc68-800a-9596-c84730c9d21a" class="">
+</p><p id="15c506f1-dc68-8020-9fff-e2dd0f10c861" class="">In this part, I used the bilateral filter to get the Detail Layer and Base Layer. (The Detail Layer is binarized for display, threshold = 0.1)</p><figure id="15c506f1-dc68-809c-8dfc-ee5c4950257d" class="image"><a href="Figure_1%202.png"><img style="width:768px" src="Figure_1%202.png"/></a></figure><p id="15b506f1-dc68-8044-aa3b-fa8a205e502c" class="">
+</p><figure id="15b506f1-dc68-809c-bbb4-f67d567fb976" class="image"><a href="Figure_1%203.png"><img style="width:707.9744873046875px" src="Figure_1%203.png"/></a></figure><p id="15b506f1-dc68-8065-be9b-eea23509431c" class="">
+</p><p id="15b506f1-dc68-8010-b7ce-cb0d65d25397" class="">And below are the results for all images:</p><div id="15b506f1-dc68-8046-be43-f019ba50de5d" class="column-list"><div id="15b506f1-dc68-803b-acb9-e17589d8d233" style="width:50%" class="column"><p id="15b506f1-dc68-8026-8cb4-e11b44bddc64" class="">Global Simple</p><figure id="15b506f1-dc68-80f3-9ced-db185b8a396e" class="image"><a href="global_simple.png"><img style="width:707.986083984375px" src="global_simple.png"/></a></figure></div><div id="15b506f1-dc68-8056-9009-fcca00a8e3a5" style="width:50%" class="column"><p id="15b506f1-dc68-80bb-a6d5-eb00a64d0020" class="">Durand</p><figure id="15b506f1-dc68-8015-8a2f-d18189e6743b" class="image"><a href="durand.png"><img style="width:1280px" src="durand.png"/></a></figure></div></div><div id="15b506f1-dc68-80ac-9d71-d09c7ae930d1" class="column-list"><div id="15b506f1-dc68-80c4-ba8e-cd76caf41c9d" style="width:50%" class="column"><figure id="15b506f1-dc68-8018-8804-da2ed2694403" class="image"><a href="global_simple%201.png"><img style="width:501.99072265625px" src="global_simple%201.png"/></a></figure><p id="15b506f1-dc68-8066-8f8d-c4b944db52aa" class="">
+</p><figure id="15b506f1-dc68-806a-a5de-fc4fd6610943" class="image"><a href="global_simple%202.png"><img style="width:707.9744873046875px" src="global_simple%202.png"/></a></figure></div><div id="15b506f1-dc68-808b-b934-d12fb54bc65c" style="width:50%" class="column"><figure id="15b506f1-dc68-8098-8ea5-cf8c5fec8bcc" class="image"><a href="durand%201.png"><img style="width:501.99072265625px" src="durand%201.png"/></a></figure><p id="15b506f1-dc68-80e8-bc4d-cc0f11b807ed" class="">
+</p><figure id="15b506f1-dc68-8010-a6f9-ebd11ae74b02" class="image"><a href="durand%202.png"><img style="width:707.9744873046875px" src="durand%202.png"/></a></figure></div></div><p id="15b506f1-dc68-8006-a8ae-c8e71efed20e" class="">
+</p><div id="15b506f1-dc68-8001-a54b-cc50d9740599" class="column-list"><div id="15b506f1-dc68-8033-92fb-fbe2a837060b" style="width:50%" class="column"><figure id="15b506f1-dc68-8023-b2d5-cf9cddf6d3f9" class="image"><a href="global_simple%203.png"><img style="width:707.986083984375px" src="global_simple%203.png"/></a></figure></div><div id="15b506f1-dc68-809e-bb01-cdecd30d2931" style="width:50%" class="column"><figure id="15b506f1-dc68-80eb-aeab-ddf1579aea91" class="image"><a href="durand%203.png"><img style="width:707.986083984375px" src="durand%203.png"/></a></figure></div></div><div id="15b506f1-dc68-80df-a151-d6fa88a9c95e" class="column-list"><div id="15b506f1-dc68-801a-897e-f0eab41032eb" style="width:50%" class="column"><figure id="15b506f1-dc68-80fa-aade-f6c12557238c" class="image"><a href="global_simple%204.png"><img style="width:330.9837951660156px" src="global_simple%204.png"/></a></figure></div><div id="15b506f1-dc68-80ca-b99d-fdb0f13c2514" style="width:50%" class="column"><figure id="15b506f1-dc68-8088-93ea-e03b2b4f5083" class="image"><a href="durand%204.png"><img style="width:390.9837951660156px" src="durand%204.png"/></a></figure></div></div><div id="15b506f1-dc68-8039-a880-e5f506fb0693" class="column-list"><div id="15b506f1-dc68-80f7-9893-c17f1cd6d02e" style="width:50%" class="column"><figure id="15b506f1-dc68-80d3-9f1f-fafa43325c7c" class="image"><a href="global_simple%205.png"><img style="width:707.986083984375px" src="global_simple%205.png"/></a></figure></div><div id="15b506f1-dc68-80f1-a966-ff0d7d5aaa12" style="width:50%" class="column"><figure id="15b506f1-dc68-8053-9f05-da95a594c958" class="image"><a href="durand%205.png"><img style="width:1280px" src="durand%205.png"/></a></figure></div></div><div id="15b506f1-dc68-80d6-bfed-c427db2c33f3" class="column-list"><div id="15b506f1-dc68-8031-a480-e1606399dbde" style="width:50.000000000000014%" class="column"><figure id="15b506f1-dc68-80bc-8b30-d5c0240ed767" class="image"><a href="global_simple%206.png"><img style="width:330.9837951660156px" src="global_simple%206.png"/></a></figure></div><div id="15b506f1-dc68-8042-8617-c6dce0a55e67" style="width:50%" class="column"><figure id="15b506f1-dc68-80e5-ac0f-f3c1b4e3a1f2" class="image"><a href="durand%206.png"><img style="width:707.986083984375px" src="durand%206.png"/></a></figure></div></div><p id="15b506f1-dc68-80da-91f5-f865f4bf45fa" class="">
+</p><p id="15b506f1-dc68-8058-9416-f056772bd4f1" class="">The results are incredible, and are much better compared to the original result. From eyed debugging, we cannot say that the Durand method is completely better than the Global Simple method, because there are some scenes where the Durand method does not seem to have an advantage. My conclusion is that when the span of the maximum and minimum values of the radiation diagram is relatively small, the Global Simple method is better. However, if the span is very large, such as when the contrast between bright and dark parts is large, for instance outdoors images, the Durand method performs better.</p><p id="15b506f1-dc68-80a2-bdbb-f56aee90c6df" class="">
+</p><h2 id="15b506f1-dc68-803c-967f-cf6d967826ce" class="">Bells and Whistle: Try the algorithm on your own photos!</h2><p id="15b506f1-dc68-801b-9ed2-f7a6124ed6d0" class="">I took the photos of the corridor of my apartment, and inside the building, it was rather dark, while it is very bright outside the building.</p><p id="15b506f1-dc68-80fa-935b-f8bf25ecb755" class="">
+</p><div id="15b506f1-dc68-80d6-bb7d-d4ad3167dc42" class="column-list"><div id="15b506f1-dc68-80e8-b403-ea94379e6940" style="width:25%" class="column"><figure id="15b506f1-dc68-80af-9381-ebc313f88351" class="image"><a href="1_45.jpg"><img style="width:707.986083984375px" src="1_45.jpg"/></a></figure></div><div id="15b506f1-dc68-8078-a05b-de6a0c098483" style="width:25%" class="column"><figure id="15b506f1-dc68-808b-a6ff-c8b038311205" class="image"><a href="1_90.jpg"><img style="width:3468px" src="1_90.jpg"/></a></figure></div><div id="15b506f1-dc68-80f7-a090-dd37784fb421" style="width:25%" class="column"><figure id="15b506f1-dc68-80de-a03e-f5bc01fc68ce" class="image"><a href="1_600.jpg"><img style="width:707.986083984375px" src="1_600.jpg"/></a></figure></div><div id="15b506f1-dc68-8027-a37b-f5d62ac46ed3" style="width:25%" class="column"><figure id="15b506f1-dc68-8080-97f3-e97b5fa7a52e" class="image"><a href="1_1000.jpg"><img style="width:707.986083984375px" src="1_1000.jpg"/></a></figure></div></div><p id="15b506f1-dc68-8028-aaa7-ff42800b29e5" class="">
+</p><p id="15b506f1-dc68-8096-aae7-c47296452611" class="">I try the algorithm on the images. And the result is amazing</p><div id="15b506f1-dc68-8072-bda6-f24c3b9a0944" class="column-list"><div id="15b506f1-dc68-8029-a5b1-e5ee37a71f4a" style="width:50%" class="column"><figure id="15b506f1-dc68-8004-88c0-edc524d3f5e4" class="image"><a href="hdr_radiance_map_mean.png"><img style="width:705.4744873046875px" src="hdr_radiance_map_mean.png"/></a></figure><p id="15b506f1-dc68-8010-8bf5-c6f17bf539f9" class="">heatmap</p></div><div id="15b506f1-dc68-8030-97da-cd067b06f05f" style="width:50%" class="column"><figure id="15b506f1-dc68-8003-99a1-f7ab3a907f8b" class="image"><a href="durand%207.png"><img style="width:3468px" src="durand%207.png"/></a></figure><p id="15b506f1-dc68-80f8-9705-ffc84762e507" class="">durand</p></div></div><p id="15b506f1-dc68-8090-8c85-f623a772502a" class="">
+</p><p id="15b506f1-dc68-80a2-bf68-f842c54011b2" class="">The radiance map show the strength of each pixel, which aigns with the intuition, and the durand algorithm capture the bright part and the dark part at the same time.</p><p id="15b506f1-dc68-802e-b3ec-dd0d01cc656c" class="">
+</p><h2 id="15b506f1-dc68-80d7-b039-d99036913daa" class="">Bells and Whistle: automatic alignment</h2><p id="15b506f1-dc68-80c8-9ae6-c006e62547fa" class="">We can see that for image for example garden, the images didn’t align very well, so it is important to apply alignment before the hdr mapping process begins.</p><p id="15b506f1-dc68-80da-a676-d5dc68a5da92" class="">
+</p><figure id="15b506f1-dc68-8041-9f32-c29f00efb999" class="image"><a href="durand%203.png"><img style="width:707.986083984375px" src="durand%203.png"/></a></figure><p id="15b506f1-dc68-8013-b88b-de20de394a5c" class="">before alignment</p><p id="15b506f1-dc68-8085-a400-fb0200128a6d" class="">
+</p><p id="15b506f1-dc68-8012-8e49-fc7645448614" class="">For this aim, I use the cv2.createAlignMTB() method to automatically align the image before the process begins, and we can witness a large improvement in the final hdr image quality.</p><figure id="15b506f1-dc68-80da-9281-ef500a25999c" class="image"><a href="durand%208.png"><img style="width:707.986083984375px" src="durand%208.png"/></a></figure><p id="15b506f1-dc68-8055-8e06-e3a8d0cb2342" class="">after alignment</p><p id="15b506f1-dc68-80a4-b1f1-ddebfbfff460" class="">
+</p><p id="15b506f1-dc68-80a8-aab9-ce0870cdffe3" class="">The improvement is obvious.</p><h1 id="15a506f1-dc68-80f9-8178-dff18e0bb372" class=""><strong>Proj2: Lightfield Camera: Depth Refocusing and Aperture Adjustment with Light Field Data</strong></h1><p id="15b506f1-dc68-807f-a20f-eb3c845136aa" class="">In this part, we want to reproduce d<strong>epth refocusing and Aperture Adjustment</strong> using real lightfield data.</p><p id="15b506f1-dc68-808d-b9ea-d82bc1007b8b" class="">For datast, we use The <a href="http://lightfield.stanford.edu/lfs.html">Stanford Light Field Archive</a> , which has multiple images taken over a regularly spaced grid.</p><p id="15b506f1-dc68-80ff-a885-dc3387ebce2f" class="">
+</p><h2 id="15b506f1-dc68-804e-8a17-ccae716984f2" class=""><strong>1) Depth Refocusing</strong></h2><p id="15b506f1-dc68-80c6-b8db-caf700cbdca5" class="">First, we can simply average all the images together and see what will happen.</p><figure id="15b506f1-dc68-8056-8d1a-fbac0950ca9c" class="image"><a href="image%201.png"><img style="width:515px" src="image%201.png"/></a></figure><p id="15b506f1-dc68-801f-9e3b-df44d9e1dbcf" class="">We can see that the photo is focused at far away. The objects which are far away from the camera do not vary their position significantly when the camera moves around while keeping the optical axis direction unchanged. However, those points will change greatly. That’s why the picture look sharp in the far end while it is blurry in the near place.</p><p id="15b506f1-dc68-804a-b5b4-cc457b4dbe53" class="">
+</p><p id="15b506f1-dc68-80a3-aae1-e746694e6d84" class="">Therefore we can shifting the images to a centralized reference multiplied by a factor α, along with averaging, allows one to focus on object at different depths.</p><p id="15b506f1-dc68-8064-bf32-fc35af24f440" class="">
+</p><div id="15b506f1-dc68-8051-8cac-fecef3c59b36" class="column-list"><div id="15b506f1-dc68-80c6-9e90-eae96d3ca82c" style="width:50%" class="column"><figure id="15b506f1-dc68-8075-8ffd-d271097557d0" class="image"><a href="image%202.png"><img style="width:330.9837951660156px" src="image%202.png"/></a></figure></div><div id="15b506f1-dc68-8081-ad42-d08411abdbde" style="width:50%" class="column"><figure id="15b506f1-dc68-8076-9b5f-cbf21398eb4c" class="image"><a href="image%203.png"><img style="width:330.9837951660156px" src="image%203.png"/></a></figure></div></div><div id="15b506f1-dc68-80d5-bd27-c965a4d1d1d2" class="column-list"><div id="15b506f1-dc68-80ad-9bdf-d886ded573f4" style="width:50%" class="column"><figure id="15b506f1-dc68-8028-8152-d591a6899cf5" class="image"><a href="image%204.png"><img style="width:330.9837951660156px" src="image%204.png"/></a></figure></div><div id="15b506f1-dc68-80e9-b849-e1c35d4a7d61" style="width:50%" class="column"><figure id="15b506f1-dc68-80fc-9808-ff699fd97adc" class="image"><a href="image%205.png"><img style="width:330.9837951660156px" src="image%205.png"/></a></figure></div></div><div id="15b506f1-dc68-80cf-b92b-ee7362c939f2" class="column-list"><div id="15b506f1-dc68-8049-b8eb-db4fc13c698e" style="width:50%" class="column"><figure id="15b506f1-dc68-8050-bbb9-c6ff53b9d4c9" class="image"><a href="image%206.png"><img style="width:330.9837951660156px" src="image%206.png"/></a></figure><p id="15b506f1-dc68-807f-8840-faeacbd99521" class="">
+</p><p id="15b506f1-dc68-80aa-87df-e60103a1e651" class="">
+</p><p id="15b506f1-dc68-8079-8046-f2565731c534" class="">
+</p></div><div id="15b506f1-dc68-80d1-893f-c65968b2547e" style="width:50%" class="column"><figure id="15b506f1-dc68-80dd-a2c8-f3284bcf421d" class="image"><a href="image%207.png"><img style="width:330.9837951660156px" src="image%207.png"/></a></figure></div></div><figure id="15b506f1-dc68-80fa-ada0-feec40fddf66" class="image"><a href="depth_refocus.gif"><img style="width:720px" src="depth_refocus.gif"/></a></figure><p id="15b506f1-dc68-8032-9a0f-d7cf68c85fe1" class="">
+</p><h2 id="15b506f1-dc68-80e6-a9aa-e155b1e7cea3" class=""><strong>2) Aperture Adjustment</strong></h2><p id="15b506f1-dc68-801c-8def-ddf3a0d10701" class="">For the second part, we want to explore how to adjust the <strong>Aperture </strong>with the dataset.</p><p id="15b506f1-dc68-804c-a1c7-c5e38bb414fd" class="">What we do is we first select the picture at the center of the scene, and then by changing the radius, we choose those pictures around the center within the radius.</p><div id="15b506f1-dc68-800b-adac-c4c9fa74ecd6" class="column-list"><div id="15b506f1-dc68-80bf-9c56-cd69e0a1a7f7" style="width:50%" class="column"><figure id="15b506f1-dc68-8012-8ada-f75bb8d22837" class="image"><a href="image%208.png"><img style="width:330.9837951660156px" src="image%208.png"/></a></figure></div><div id="15b506f1-dc68-8037-a89d-efe32fb54891" style="width:50%" class="column"><figure id="15b506f1-dc68-8063-82d6-f991dd650880" class="image"><a href="image%209.png"><img style="width:330.9837951660156px" src="image%209.png"/></a></figure></div></div><div id="15b506f1-dc68-804d-9c2f-fed020555111" class="column-list"><div id="15b506f1-dc68-80d0-8b30-cfbdd6cffc51" style="width:50%" class="column"><figure id="15b506f1-dc68-8020-b0aa-cfb888f7bb53" class="image"><a href="image%2010.png"><img style="width:330.9837951660156px" src="image%2010.png"/></a></figure></div><div id="15b506f1-dc68-801b-a7be-df825b3469b2" style="width:50%" class="column"><figure id="15b506f1-dc68-8009-8b81-f780f9bd4b96" class="image"><a href="image%2011.png"><img style="width:330.9837951660156px" src="image%2011.png"/></a></figure></div></div><figure id="15b506f1-dc68-80c9-85a6-cc841521bf22" class="image"><a href="aperture.gif"><img style="width:624px" src="aperture.gif"/></a></figure><h2 id="15b506f1-dc68-8012-bee7-d60b8b27fac0" class=""><strong>3) Summary</strong></h2><p id="15b506f1-dc68-8041-b515-f538d780821e" class="">This project is amazing! I like taking photos, but I always struggle with choosing focus and aperture, I never imagined that I could change these automatically through multiple photos, this is very interesting</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

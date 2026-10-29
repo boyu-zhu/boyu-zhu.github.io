@@ -1,0 +1,690 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Project 1: Colorizing the Prokudin-Gorskii photo collection</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-default_background {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.highlight-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.block-color-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-uiBlue { background-color: rgba(35, 131, 226, .07); }
+.select-value-color-pink { background-color: rgba(245, 224, 233, 1); }
+.select-value-color-purple { background-color: rgba(232, 222, 238, 1); }
+.select-value-color-green { background-color: rgba(219, 237, 219, 1); }
+.select-value-color-gray { background-color: rgba(227, 226, 224, 1); }
+.select-value-color-transparentGray { background-color: rgba(227, 226, 224, 0); }
+.select-value-color-translucentGray { background-color: rgba(0, 0, 0, 0.06); }
+.select-value-color-orange { background-color: rgba(250, 222, 201, 1); }
+.select-value-color-brown { background-color: rgba(238, 224, 218, 1); }
+.select-value-color-red { background-color: rgba(255, 226, 221, 1); }
+.select-value-color-yellow { background-color: rgba(253, 236, 200, 1); }
+.select-value-color-blue { background-color: rgba(211, 229, 239, 1); }
+.select-value-color-pageGlass { background-color: undefined; }
+.select-value-color-washGlass { background-color: undefined; }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="a84b636c-fc77-49da-9881-a4fc7d4f35dd" class="page sans"><header><img class="page-cover-image" src="https://www.notion.so/images/page-cover/met_silk_kashan_carpet.jpg" style="object-position:center 50%"/><h1 class="page-title">Project 1: <em><strong>Colorizing the Prokudin-Gorskii photo collection</strong></em></h1><p class="page-description"></p></header><div class="page-body"><p id="0f1b2906-7b88-443e-a53f-e622dd43c727" class="">-Boyu Zhu</p><div id="d2721f14-b6e8-4b0d-bf37-5aaa9930abf8" class="column-list"><div id="40b3f92a-0d96-4d45-b794-2b3f17d029bc" style="width:50%" class="column"><h2 id="8c201c31-246d-46f9-ae60-8d754aae5d2a" class="">Project Introduction</h2><figure id="3afeb6ca-734d-4484-9f1f-4c8c5a14893e" class="image"><a href="image.png"><img style="width:1143px" src="image.png"/></a></figure><p id="20939b98-0ef9-41ae-9b6a-6c06d255151a" class="">Sergey Mikhaylovich Prokudin-Gorsky was a Russian chemist and photographer. He recorded three exposures of every scene onto a glass plate using a red, a green, and a blue filter.</p><p id="dc79464b-040c-4f96-8557-54b6ab394cd0" class="">The goal of this assignment is to take the digitized Prokudin-Gorskii glass plate images and, using image processing techniques, automatically produce a color image with as few visual artifacts as possible. In order to do this, extract the three color channel images, place them on top of each other, and align them so that they form a single RGB color image.</p><p id="b3d32a59-40d2-4bd6-847b-aa18e904ee2a" class="">
+</p></div><div id="269e2f9b-9184-4071-b6df-60400bf005c7" style="width:50%" class="column"><figure id="8cf9c7e6-075e-4c27-8825-0631939a4bd9" class="image"><a href="cathedral.jpg"><img style="width:330.9895935058594px" src="cathedral.jpg"/></a></figure></div></div><h2 id="edad8049-3235-407c-8138-b7e7e2020af1" class="">JPG Image Process Method</h2><p id="3c4460d8-b019-497b-8338-176bf5ac7030" class="">For low-resolution JPG images, I used a direct shift method. The blue channel image was taken as the base, while the other two channels were shifted based on the displacement of a sliding window, and both were compared against the blue channel. The evaluation metric used was the sum of squared differences to compare the two images. This method works relatively well for small-sized images. </p><p id="a160cc21-482c-4404-bdbf-5a88756e8e43" class="">This method does not work well when used directly, primarily due to the presence of edges in scanned images, which affect alignment. Therefore, I used a cropping approach, trimming 10% from each side of the image to leave only the central portion before performing the alignment.</p><h2 id="ee57f795-f078-47ed-97c1-9d6df91c785d" class="">JPG Images Output</h2><div id="45fde2a5-5b2e-4381-8f71-450e6441ca6f" class="column-list"><div id="d971891e-54a8-44c2-8772-c326a3c04c9c" style="width:33.333333333333336%" class="column"><figure id="a9664e92-b745-404e-8b2b-9802ff05581d" class="image"><a href="cathedral%201.jpg"><img style="width:205.3125px" src="cathedral%201.jpg"/></a></figure><p id="3ae78700-60e9-4ca5-9f2e-bdb182786131" class="">cathedral</p><p id="4d9f94ff-e289-4fb4-9455-0179e981e90e" class="">g (5, 2), r (12, 3) </p></div><div id="de21be50-dc2e-403a-a837-2ac483d84ed5" style="width:33.333333333333336%" class="column"><figure id="3016e0fa-0f7f-4495-b4e8-cca88ce6218c" class="image"><a href="monastery.jpg"><img style="width:205.3125px" src="monastery.jpg"/></a></figure><p id="39d5a060-2b34-4ad2-9db3-b048e28b8c9e" class="">monastery</p><p id="dc838b37-c6f9-4dc6-9796-fa68165a9ea9" class="">g (-3, 2), r (3, 2)</p></div><div id="dc0f8167-3da8-4d29-b5d9-980c788337fc" style="width:33.33333333333333%" class="column"><figure id="e0ebe051-9116-41dc-92b0-f88ad428db9c" class="image"><a href="tobolsk.jpg"><img style="width:205.3125px" src="tobolsk.jpg"/></a></figure><p id="33d812b6-023c-4be4-9560-9154852a4064" class="">tobolsk</p><p id="4c8aed12-91a1-47a3-a546-61f82af5b146" class="">g (3, 2), r (6, 3)</p></div></div><p id="0ad516b5-b1a2-44bf-9237-d746aebc945a" class="">
+</p><h2 id="ce272628-bdb1-4434-9764-35ffa3f41a5a" class="">TIFF Image Process Method</h2><p id="a0b9d882-b14a-420a-a0a5-34fe612e460d" class="">However, the low-resolution version method is not suitable for large-sized TIFF images, as exhaustive search over such a large number of pixels becomes too time-consuming.</p><p id="7f20a910-508a-4b22-937a-f5dca16d658c" class="">To align high-resolution images, an image pyramid method was used for layer-by-layer alignment. By recursively downscaling the image using the <code>imresize</code> function to a more manageable size, alignment is first performed at a lower resolution. The alignment method is the same as that used for low-resolution images. Once the optimal displacement is found, the process moves up to the next higher-resolution image. At this level, the corresponding pixel location is identified, and the search resumes within a sliding window range based on the previously found displacement. In this case, I use the downscale factor of 2.</p><h2 id="83d41d81-86cc-4882-9681-e844077192e9" class="">TIFF Images Output</h2><div id="58fe734b-338f-412c-8691-c9299c1839e6" class="column-list"><div id="aea0d3f3-7122-437d-858d-6d7e86f1b0bc" style="width:50%" class="column"><figure id="39a426f3-3d0b-4709-80fc-07e20a64b1bf" class="image"><a href="church.jpg"><img style="width:3634px" src="church.jpg"/></a></figure><p id="ebbd4b45-50e1-412a-8b86-a2071b2dc6e0" class="">church</p><p id="47c31c9e-741f-4c32-addb-c84e4fd6e5a5" class="">g (25, 3), r (58, -5) </p></div><div id="52d5027f-ef00-4177-aa63-e89ce4f70be7" style="width:50.000000000000014%" class="column"><figure id="5054219d-5c59-483e-9bd4-3162756299d7" class="image"><a href="emir.jpg"><img style="width:3702px" src="emir.jpg"/></a></figure><p id="c8bfc543-b5b9-4293-818d-fef4d76925a4" class="">emir</p><p id="f493d740-e08f-427a-962a-cb26ff5de2eb" class="">g (49, 24), r (88, 43) </p></div></div><div id="807ecf1d-5b49-430a-922e-217ffc3cabf8" class="column-list"><div id="e0b78b8e-02dd-4a59-b820-fb1a21682a0d" style="width:50%" class="column"><figure id="bda050ea-8f92-4980-9e8f-220d50a8dfd1" class="image"><a href="harvesters.jpg"><img style="width:3683px" src="harvesters.jpg"/></a></figure><p id="27d30c3b-a797-4ad6-bd5c-5584fc99e966" class="">harvesters</p><p id="af60e8be-0afb-40f6-a387-84642cceee19" class="">g (60, 16), r (124, 13) </p></div><div id="39205711-edc0-4278-92a5-dd83fbfd812d" style="width:50.00000000000002%" class="column"><figure id="aee2a626-b7c6-4aa2-aa7b-c0b494d9d198" class="image"><a href="icon.jpg"><img style="width:3741px" src="icon.jpg"/></a></figure><p id="d8ec3362-aa62-4e1b-bd82-de0b55705f88" class="">icon</p><p id="8fc899ab-2ca6-4034-84f9-d11cf8e4c291" class="">g (41, 17), r (89, 23) </p></div></div><div id="d1c8bef0-6077-4b8f-8e53-cc5eb54a6330" class="column-list"><div id="eb01eb8c-c962-42f9-b3a7-80d691b3fae8" style="width:50%" class="column"><figure id="d6b32dbe-cf36-47fc-956d-563fa49d888f" class="image"><a href="lady.jpg"><img style="width:3761px" src="lady.jpg"/></a></figure><p id="f26cd58c-82ad-4730-9ab1-fcdffe4d099f" class="">lady</p><p id="b1f35d5e-a499-43b1-adc1-90211fd639ee" class="">g (55, 8), r (111, 12) </p></div><div id="d3c12639-345d-4236-b26c-a5fadd15ff90" style="width:50%" class="column"><figure id="2999361c-8639-47a5-bf64-2972cb77c907" class="image"><a href="melons.jpg"><img style="width:3770px" src="melons.jpg"/></a></figure><p id="63beb801-2a8c-4b31-bd1b-3c0cfd385d2e" class="">melons</p><p id="d2b6602c-e220-453c-95a1-fc801868b0b1" class="">g (82, 9), r (177, 11) </p></div></div><div id="8d8139e6-30b9-4b68-86e7-cc5a1c41c772" class="column-list"><div id="9bfde74b-f3b5-48b9-8796-301eb57f468c" style="width:50%" class="column"><figure id="af09e44b-84ba-4155-88bd-56a8052e7efb" class="image"><a href="onion_church.jpg"><img style="width:3781px" src="onion_church.jpg"/></a></figure><p id="b85e9ce7-147f-411a-bc6c-412d7c294e67" class="">onion_church</p><p id="18ebbb4e-6f96-4312-8a67-a4a779224282" class="">g (51, 26), r (108, 36) </p></div><div id="fadcdd25-f8d8-445e-a6e7-91d562cbcf7f" style="width:50%" class="column"><figure id="775f14b3-dde8-4547-b3da-c7d31a45d14c" class="image"><a href="sculpture.jpg"><img style="width:3800px" src="sculpture.jpg"/></a></figure><p id="ca0fb566-910a-40a3-8be8-9bec78bf5a92" class="">sculpture</p><p id="9ca3553b-8a1e-456b-a0d5-07c7dfacc512" class="">g (33, -11), r (140, -27) </p></div></div><div id="119b6fc7-8ff1-4018-a4b8-d5bd3a0c75db" class="column-list"><div id="b31c6e71-1ecf-4ca5-bc24-c99e1cd925d3" style="width:50%" class="column"><figure id="45e871fb-212f-4571-bd4b-c75b5334e95d" class="image"><a href="self_portrait.jpg"><img style="width:336px" src="self_portrait.jpg"/></a></figure><p id="5a78b60a-a51a-4aa6-af34-54768a0db767" class="">self_portrait</p><p id="c1c2a8f3-d952-45c2-adbf-38ab0738d948" class="">g (79, 29), r (175, 34) </p><figure id="76a5a4d7-d770-46b3-9ed8-eddeafc8ccea" class="image"><a href="train.jpg"><img style="width:336px" src="train.jpg"/></a></figure><p id="925ca94c-e2ec-41a8-b287-01d17577834c" class="">train</p><p id="e8812a66-6f97-4db5-bbbb-53f83b30e740" class="">g (42, 6), r (87, 32) </p><p id="2d0fca80-4edf-4dbe-a34c-8e919769f702" class="">
+</p><h2 id="394147de-5de6-48c0-ae86-921baafc4c2c" class="">Bells and Whistles</h2></div><div id="a1ade95d-52bd-40a3-9193-478257902f29" style="width:50%" class="column"><figure id="db76a3f1-acbb-49ae-8881-49103982b7df" class="image"><a href="three_generations.jpg"><img style="width:331px" src="three_generations.jpg"/></a></figure><p id="89857d26-422f-4551-9d56-d9c1afe22af4" class="">three_generations</p><p id="f3daa340-372d-4ab8-bccd-892c42774653" class="">g (55, 13), r (112, 10) </p><p id="f43f8ef5-77a6-4dcd-8883-f3b823743f23" class="">
+</p></div></div><figure id="156a80ed-739a-4d00-bb35-14cb0d6e60e1" class="image"><a href="emir.jpg"><img style="width:3702px" src="emir.jpg"/></a></figure><p id="745f6629-8f25-4d70-850d-233f8ec3ae1d" class="">After inspecting each aligned image, although all other imaged are good, I found that there was still some displacement between the three channels of the EMIR photos. This was particularly noticeable in images involving portraits, where facial blurring was especially apparent to the naked eye. Therefore, I began investigating the cause of this issue.</p><p id="730d87d4-d221-47f7-a908-7085deca8238" class="">
+</p><figure id="bb13805e-9eec-418f-b1e1-8dc2b696ce20" class="image"><a href="Figure_1.png"><img style="width:619.3333740234375px" src="Figure_1.png"/></a></figure><p id="067af38f-2b59-4ac1-8c6b-17305f89be1d" class="">From the original images of three channels, we can see that the gorgeous robe of Emir are largely composed of blue, and there the three channel differ largely in the area of the robe. Unfortunately, the robe is the major part of the picture. and I guess that’s why alignment went slightly wrong in this case. </p><p id="ddbb9a7c-abe3-43a3-aa40-b6404204bbe8" class="">But in the three channels, we can see that the patterned edge of the robe and the figure edge are largely the same. Therefore, I use Canny form OpenCV to preprocess the three channels, and then use the image pyramid to align. It turns out that it results in better alignment, and it also performs well on other images.</p><figure id="3f29cbb4-13ac-49b6-81e6-dd0f8c3e422e" class="image"><a href="emir%201.jpg"><img style="width:708px" src="emir%201.jpg"/></a></figure><p id="cf16bfcf-782f-48d2-ae4a-276b2911ce2f" class="">
+</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
