@@ -25,6 +25,6 @@ latest_posts:
 
 Hi! I'm Boyu Zhu, a first-year Ph.D. student in the [LUKA Lab](https://luka-group.github.io/index.html) at [UC Davis](https://www.ucdavis.edu/), where I am fortunate to be advised by [Prof. Muhao Chen](https://muhaochen.github.io/).
 
-Before that, I received my bachelor's degree in Software Engineering from [Fudan University](https://www.fudan.edu.cn/) in 2026, where I also worked with the LUKA Lab as an undergraduate researcher. I was a Machine Learning Engineer intern at [OpenDataLab](https://opendatalab.com/), [Shanghai AI Lab](https://www.shlab.org.cn/), and a visiting student at [UC Berkeley](https://www.berkeley.edu/) in fall 2024.
+Before that, I received my bachelor's degree from the School of Computer Science at [Fudan University](https://www.fudan.edu.cn/). I'm deeply grateful to the mentors and friends who have inspired and supported me along the way.
 
 I am broadly interested in making large language models **safe, reliable, and useful**, from building omni-modal guardrails to enabling LLMs for scientific discovery.
