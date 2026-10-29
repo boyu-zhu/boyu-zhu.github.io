@@ -1,0 +1,9 @@
+github_users:
+  - boyu-zhu
+
+repo_description_lines_max: 2
+
+github_repos:
+  - boyu-zhu/VisualFlow
+  - boyu-zhu/OmniGuard_webpage
+  - boyu-zhu/awesome-claude-code-alternatives
